@@ -2,10 +2,14 @@ import express, { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
+import cors from 'cors';
+// import { PrismaClient } from '@prisma/client';
+// const prisma = new PrismaClient();
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
