@@ -8,8 +8,8 @@ const router = (0, express_1.Router)();
 router.route('/').get(userController_1.getAllUsers);
 // Get a user, update a user, delete a user
 router
-    .route('/:id')
-    .get(userController_1.getUser)
+    .route('/user')
+    .get(userController_1.getCurrentUser)
     .put(validationMiddleware_1.validateUpdateUser, userController_1.updateUser)
     .delete(userController_1.deleteUser);
 router.route('user/credentials').patch();

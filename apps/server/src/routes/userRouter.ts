@@ -2,7 +2,7 @@ import { Router } from 'express';
 import {
   deleteUser,
   getAllUsers,
-  getUser,
+  getCurrentUser,
   updateUser,
 } from '../controllers/userController';
 import { validateUpdateUser } from '../middlewares/validationMiddleware';
@@ -14,8 +14,8 @@ router.route('/').get(getAllUsers);
 
 // Get a user, update a user, delete a user
 router
-  .route('/:id')
-  .get(getUser)
+  .route('/user')
+  .get(getCurrentUser)
   .put(validateUpdateUser, updateUser)
   .delete(deleteUser);
 

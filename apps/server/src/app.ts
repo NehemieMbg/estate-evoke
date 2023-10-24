@@ -6,14 +6,14 @@ import cors from 'cors';
 import userRouter from './routes/userRouter';
 import authRouter from './routes/authRouter';
 import { authMiddleware } from './middlewares/authMiddleware';
-// import { PrismaClient } from '@prisma/client';
-// const prisma = new PrismaClient();
+import cookieParser from 'cookie-parser';
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));

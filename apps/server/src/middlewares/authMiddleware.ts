@@ -1,18 +1,49 @@
 import { StatusCodes } from 'http-status-codes';
-import { verifyToken } from '../utils/encryptedData';
-import { RequestHandler } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
+import prisma from '../utils/prisma';
+import { User, UserRequest } from '../types/types';
 
-export const authMiddleware: RequestHandler = async (req, res, next) => {
-  const token = req.cookies;
+export const authMiddleware = async (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.cookies.jwt;
 
-  if (!token) {
+    if (!token) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: 'You must be logged in to access this resource' });
+    }
+
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET!) as {
+      id: string;
+    };
+    const user = await prisma.user.findUnique({
+      where: { id: decodedToken.id },
+      select: {
+        id: true,
+        email: true,
+        bio: true,
+        firstName: true,
+        lastName: true,
+      },
+    });
+
+    if (!user) {
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .json({ message: 'You must be logged in to access this resource' });
+    }
+
+    req.user = user as User;
+
+    next();
+  } catch (error) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
       .json({ message: 'You must be logged in to access this resource' });
   }
-
-  //   const result = verifyToken(token);
-  console.log('Tokens: ', token);
-
-  next();
 };

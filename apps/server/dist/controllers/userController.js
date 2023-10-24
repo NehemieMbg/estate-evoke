@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserCredentials = exports.updateUser = exports.getUser = exports.getAllUsers = void 0;
+exports.deleteUser = exports.updateUserCredentials = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const prisma_1 = __importDefault(require("../utils/prisma"));
 const encryptedData_1 = require("../utils/encryptedData");
@@ -38,8 +38,8 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getAllUsers = getAllUsers;
 // ? GET USER
-const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+const getCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.user;
     try {
         const user = yield prisma_1.default.user.findUnique({
             where: { id: id },
@@ -48,6 +48,8 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 firstName: true,
                 lastName: true,
                 avatar: true,
+                bio: true,
+                email: true,
             },
         });
         res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'User found', data: user });
@@ -59,10 +61,10 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             res.json({ message: 'Something went wrong' });
     }
 });
-exports.getUser = getUser;
+exports.getCurrentUser = getCurrentUser;
 // ? UPDATE USER
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { id } = req.user;
     try {
         const updatedUser = yield prisma_1.default.user.update({
             where: { id: id },
@@ -104,7 +106,7 @@ const updateUserCredentials = (req, res) => __awaiter(void 0, void 0, void 0, fu
 exports.updateUserCredentials = updateUserCredentials;
 // ? DELETE USER
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { id } = req.user;
     try {
         yield prisma_1.default.user.delete({ where: { id: id } });
         res

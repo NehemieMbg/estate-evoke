@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import prisma from '../utils/prisma';
 import { hashPassword } from '../utils/encryptedData';
+import { User, UserRequest } from '../types/types';
 
 // ? GET ALL USERS
 export const getAllUsers: RequestHandler = async (req, res) => {
@@ -23,8 +24,9 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 };
 
 // ? GET USER
-export const getUser: RequestHandler = async (req, res) => {
-  const { id } = req.params;
+export const getCurrentUser: RequestHandler = async (req: UserRequest, res) => {
+  const { id } = req.user as User;
+
   try {
     const user = await prisma.user.findUnique({
       where: { id: id as string },
@@ -33,6 +35,8 @@ export const getUser: RequestHandler = async (req, res) => {
         firstName: true,
         lastName: true,
         avatar: true,
+        bio: true,
+        email: true,
       },
     });
     res.status(StatusCodes.OK).json({ message: 'User found', data: user });
@@ -43,8 +47,8 @@ export const getUser: RequestHandler = async (req, res) => {
 };
 
 // ? UPDATE USER
-export const updateUser: RequestHandler = async (req, res) => {
-  const { id } = req.params;
+export const updateUser: RequestHandler = async (req: UserRequest, res) => {
+  const { id } = req.user as User;
 
   try {
     const updatedUser = await prisma.user.update({
@@ -82,8 +86,9 @@ export const updateUserCredentials: RequestHandler = async (req, res) => {
 };
 
 // ? DELETE USER
-export const deleteUser: RequestHandler = async (req, res) => {
-  const { id } = req.params;
+export const deleteUser: RequestHandler = async (req: UserRequest, res) => {
+  const { id } = req.user as User;
+
   try {
     await prisma.user.delete({ where: { id: id as string } });
     res
