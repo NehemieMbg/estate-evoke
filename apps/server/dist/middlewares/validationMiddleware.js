@@ -12,57 +12,67 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateCreateUser = void 0;
-const express_validator_1 = require("express-validator");
-const customErrors_js_1 = require("../errors/customErrors.js");
+exports.validateSignIn = exports.validateUpdateUser = exports.validateCreateUser = void 0;
+const http_status_codes_1 = require("http-status-codes");
 const prisma_js_1 = __importDefault(require("../utils/prisma.js"));
-const withValidationErrors = (validatesValue) => {
-    // Return a single RequestHandler function
-    const validationMiddleware = Array.isArray(validatesValue)
-        ? validatesValue
-        : [validatesValue];
-    return (req, res, next) => {
-        const errors = (0, express_validator_1.validationResult)(req);
-        if (!errors.isEmpty()) {
-            const errorMessages = errors.array().map((error) => error.msg);
-            const errorMessage = errorMessages.join(', ');
-            console.log(errorMessages);
-            throw new customErrors_js_1.BadRequestError(errorMessage);
-        }
-        next();
-    };
-};
-exports.validateCreateUser = withValidationErrors([
-    (0, express_validator_1.body)('email')
-        .notEmpty()
-        .withMessage('Email is required')
-        .isEmail()
-        .withMessage('Email must be valid')
-        .custom((email) => __awaiter(void 0, void 0, void 0, function* () {
-        const user = yield prisma_js_1.default.user.findUnique({ where: { email } });
-        if (user)
-            throw new Error('Email already exists');
-    })),
-    (0, express_validator_1.body)('firstName')
-        .notEmpty()
-        .withMessage('First name is required')
-        .custom((firstName) => {
-        if (typeof firstName !== 'string')
-            throw new Error('First name must be a string');
-    }),
-    (0, express_validator_1.body)('lastName')
-        .notEmpty()
-        .withMessage('Last name is required')
-        .custom((lastName) => {
-        if (typeof lastName !== 'string')
-            throw new Error('Last name must be a string');
-    }),
-    (0, express_validator_1.body)('password').notEmpty().withMessage('Password is required'),
-    (0, express_validator_1.body)('confirmPassword')
-        .notEmpty()
-        .withMessage('Confirm password is required')
-        .custom((confirmPassword, { req }) => {
-        if (confirmPassword !== req.body.password)
-            throw new Error('Passwords do not match');
-    }),
-]);
+const validateCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = [];
+    const { email, firstName, lastName, password, confirmPassword } = req.body;
+    const user = yield prisma_js_1.default.user.findUnique({ where: { email } });
+    if (!email)
+        errors.push('Email is required');
+    if (user)
+        errors.push('Email already exists');
+    if (!firstName)
+        errors.push('First name is required');
+    if (!lastName)
+        errors.push('Last name is required');
+    if (!password)
+        errors.push('Password is required');
+    if (!confirmPassword)
+        errors.push('Confirm password is required');
+    if (errors.length > 0) {
+        return res
+            .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+            .json({ message: errors.join(', ') });
+    }
+    next();
+});
+exports.validateCreateUser = validateCreateUser;
+const validateUpdateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = [];
+    const { firstName, lastName, bio, link } = req.body;
+    if (!firstName)
+        errors.push('First name is required');
+    if (!lastName)
+        errors.push('Last name is required');
+    if (bio && typeof bio !== 'string')
+        errors.push('Bio must be a string');
+    if (bio && bio.length > 150)
+        errors.push(`Bio must be less than 150 chars. Current length: ${bio.length}`);
+    if (link && typeof link !== 'string')
+        errors.push('Link must be a string');
+    //! To add: check if link is a valid URL (Safe URL)
+    if (errors.length > 0) {
+        return res
+            .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+            .json({ message: errors.join(', ') });
+    }
+    next();
+});
+exports.validateUpdateUser = validateUpdateUser;
+const validateSignIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = [];
+    const { email, password } = req.body;
+    if (!email)
+        errors.push('Email is required');
+    if (!password)
+        errors.push('Password is required');
+    if (errors.length > 0) {
+        return res
+            .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+            .json({ message: errors.join(', ') });
+    }
+    next();
+});
+exports.validateSignIn = validateSignIn;

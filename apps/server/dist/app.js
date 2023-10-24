@@ -9,15 +9,19 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const userRouter_1 = __importDefault(require("./routes/userRouter"));
+const authRouter_1 = __importDefault(require("./routes/authRouter"));
+const authMiddleware_1 = require("./middlewares/authMiddleware");
 // import { PrismaClient } from '@prisma/client';
 // const prisma = new PrismaClient();
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
+app.use(express_1.default.json());
 if (process.env.NODE_ENV === 'development') {
     app.use((0, morgan_1.default)('dev'));
 }
-app.use('/api/v1/users', userRouter_1.default);
+app.use('/api/v1/auth', authRouter_1.default);
+app.use('/api/v1/users', authMiddleware_1.authMiddleware, userRouter_1.default);
 app.use((err, req, res, next) => {
     res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
 });

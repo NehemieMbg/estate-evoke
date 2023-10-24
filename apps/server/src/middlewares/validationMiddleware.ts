@@ -1,60 +1,67 @@
-import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { validationResult, ValidationChain, body } from 'express-validator';
-import { BadRequestError } from '../errors/customErrors.js';
+import { StatusCodes } from 'http-status-codes';
+import { RequestHandler } from 'express';
 import prisma from '../utils/prisma.js';
 
-const withValidationErrors = (
-  validatesValue: ValidationChain | ValidationChain[]
-): RequestHandler => {
-  // Return a single RequestHandler function
-  const validationMiddleware = Array.isArray(validatesValue)
-    ? validatesValue
-    : [validatesValue];
+export const validateCreateUser: RequestHandler = async (req, res, next) => {
+  const errors = [];
 
-  return (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
+  const { email, firstName, lastName, password, confirmPassword } = req.body;
 
-    if (!errors.isEmpty()) {
-      const errorMessages = errors.array().map((error) => error.msg);
-      const errorMessage = errorMessages.join(', ');
-      console.log(errorMessages);
+  const user = await prisma.user.findUnique({ where: { email } });
 
-      throw new BadRequestError(errorMessage);
-    }
-    next();
-  };
+  if (!email) errors.push('Email is required');
+  if (user) errors.push('Email already exists');
+  if (!firstName) errors.push('First name is required');
+  if (!lastName) errors.push('Last name is required');
+  if (!password) errors.push('Password is required');
+  if (!confirmPassword) errors.push('Confirm password is required');
+
+  if (errors.length > 0) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: errors.join(', ') });
+  }
+
+  next();
 };
 
-export const validateCreateUser = withValidationErrors([
-  body('email')
-    .notEmpty()
-    .withMessage('Email is required')
-    .isEmail()
-    .withMessage('Email must be valid')
-    .custom(async (email) => {
-      const user = await prisma.user.findUnique({ where: { email } });
-      if (user) throw new Error('Email already exists');
-    }),
-  body('firstName')
-    .notEmpty()
-    .withMessage('First name is required')
-    .custom((firstName) => {
-      if (typeof firstName !== 'string')
-        throw new Error('First name must be a string');
-    }),
-  body('lastName')
-    .notEmpty()
-    .withMessage('Last name is required')
-    .custom((lastName) => {
-      if (typeof lastName !== 'string')
-        throw new Error('Last name must be a string');
-    }),
-  body('password').notEmpty().withMessage('Password is required'),
-  body('confirmPassword')
-    .notEmpty()
-    .withMessage('Confirm password is required')
-    .custom((confirmPassword, { req }) => {
-      if (confirmPassword !== req.body.password)
-        throw new Error('Passwords do not match');
-    }),
-]);
+export const validateUpdateUser: RequestHandler = async (req, res, next) => {
+  const errors = [];
+
+  const { firstName, lastName, bio, link } = req.body;
+
+  if (!firstName) errors.push('First name is required');
+  if (!lastName) errors.push('Last name is required');
+  if (bio && typeof bio !== 'string') errors.push('Bio must be a string');
+  if (bio && bio.length > 150)
+    errors.push(
+      `Bio must be less than 150 chars. Current length: ${bio.length}`
+    );
+  if (link && typeof link !== 'string') errors.push('Link must be a string');
+
+  //! To add: check if link is a valid URL (Safe URL)
+
+  if (errors.length > 0) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: errors.join(', ') });
+  }
+
+  next();
+};
+
+export const validateSignIn: RequestHandler = async (req, res, next) => {
+  const errors = [];
+  const { email, password } = req.body;
+
+  if (!email) errors.push('Email is required');
+  if (!password) errors.push('Password is required');
+
+  if (errors.length > 0) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: errors.join(', ') });
+  }
+
+  next();
+};

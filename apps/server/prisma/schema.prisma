@@ -12,18 +12,19 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  firstName String
-  lastName  String
-  avatar    String?
-  bio       String?
-  link      String?
-  password  String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt // Updtate automatically when an update is made
-  posts     Post[]
-  bookmarks Bookmark[]
+  id             String     @id @default(cuid())
+  email          String     @unique
+  firstName      String
+  lastName       String
+  avatar         String?
+  avatarPublicId String?
+  bio            String?
+  link           String?
+  password       String
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt // Updtate automatically when an update is made
+  posts          Post[]
+  bookmarks      Bookmark[]
 }
 
 model Post {
