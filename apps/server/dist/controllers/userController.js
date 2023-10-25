@@ -22,8 +22,8 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const users = yield prisma_1.default.user.findMany({
             select: {
                 id: true,
-                firstName: true,
-                lastName: true,
+                name: true,
+                username: true,
                 avatar: true,
             },
         });
@@ -45,8 +45,8 @@ const getCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, function*
             where: { id: id },
             select: {
                 id: true,
-                firstName: true,
-                lastName: true,
+                name: true,
+                username: true,
                 avatar: true,
                 bio: true,
                 email: true,

@@ -3,17 +3,18 @@ import prisma from '../utils/prisma';
 import { createToken, hashPassword } from '../utils/encryptedData';
 import { StatusCodes } from 'http-status-codes';
 import { comparePassword } from '../utils/encryptedData';
+import { User } from '../types/types';
 
 // ? CREATE USER
 export const createUser: RequestHandler = async (req, res) => {
-  const { email, firstName, lastName, password } = req.body;
+  const { email, name, username, password } = req.body;
 
   try {
     const user = await prisma.user.create({
       data: {
         email,
-        firstName,
-        lastName,
+        name,
+        username,
         password: await hashPassword(password),
       },
     });
@@ -34,15 +35,29 @@ export const createUser: RequestHandler = async (req, res) => {
   }
 };
 
+//? LOG USER IN
 export const logUserIn: RequestHandler = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, username, password } = req.body as {
+    email: string;
+    username: string;
+    password: string;
+  };
+
+  console.log(req.body);
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) throw new Error('Wrong email or password');
+    let user;
+
+    if (email) {
+      user = await prisma.user.findUnique({ where: { email } });
+    } else if (username) {
+      user = await prisma.user.findUnique({ where: { username } });
+    }
+
+    if (!user) throw new Error('Wrong email/username or password');
 
     const isPasswordValid = await comparePassword(password, user.password);
-    if (!isPasswordValid) throw new Error('Wrong email or password');
+    if (!isPasswordValid) throw new Error('Wrong email/username or password');
 
     const token = createToken(user.id);
 

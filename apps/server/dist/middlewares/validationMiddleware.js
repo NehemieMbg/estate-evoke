@@ -19,20 +19,25 @@ const encryptedData_js_1 = require("../utils/encryptedData.js");
 //? Validates user data when creating it
 const validateCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = [];
-    const { email, firstName, lastName, password, confirmPassword } = req.body;
+    const { email, name, username, password, confirmPassword } = req.body;
     const user = yield prisma_js_1.default.user.findUnique({ where: { email } });
+    const usernameExists = yield prisma_js_1.default.user.findUnique({ where: { username } });
     if (!email)
         errors.push('Email is required');
     if (user)
         errors.push('Email already exists');
-    if (!firstName)
-        errors.push('First name is required');
-    if (!lastName)
-        errors.push('Last name is required');
+    if (usernameExists)
+        errors.push('Username already exists');
+    if (!name)
+        errors.push('Name is required');
+    if (!username)
+        errors.push('Username is required');
     if (!password)
         errors.push('Password is required');
     if (!confirmPassword)
         errors.push('Confirm password is required');
+    req.body.username = String(username).toLowerCase();
+    req.body.email = String(email).toLowerCase();
     if (errors.length > 0) {
         return res
             .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
@@ -44,11 +49,15 @@ exports.validateCreateUser = validateCreateUser;
 //? Validates user data when updating it
 const validateUpdateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = [];
-    const { firstName, lastName, bio, link } = req.body;
-    if (!firstName)
-        errors.push('First name is required');
-    if (!lastName)
-        errors.push('Last name is required');
+    const { name, bio, link } = req.body;
+    const username = req.body.username.toLowerCase();
+    const user = yield prisma_js_1.default.user.findUnique({ where: { username } });
+    if (!name)
+        errors.push('Name is required');
+    if (!username)
+        errors.push('Username is required');
+    if (user && req.user.username !== user.username)
+        errors.push('Username already exists');
     if (bio && typeof bio !== 'string')
         errors.push('Bio must be a string');
     if (bio && bio.length > 150)
@@ -67,11 +76,19 @@ exports.validateUpdateUser = validateUpdateUser;
 //? Validates user email and password when logging in
 const validateSignIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = [];
-    const { email, password } = req.body;
-    if (!email)
-        errors.push('Email is required');
+    let email = '';
+    let username = '';
+    const { identification, password } = req.body;
+    if (!identification)
+        errors.push('Email or username is required');
+    if (String(identification).includes('@'))
+        email = String(identification).toLowerCase();
+    else
+        username = String(identification).toLowerCase();
     if (!password)
         errors.push('Password is required');
+    req.body.email = email;
+    req.body.username = username;
     if (errors.length > 0) {
         return res
             .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
@@ -94,6 +111,7 @@ const validateUpdateEmail = (req, res, next) => __awaiter(void 0, void 0, void 0
         return res
             .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
             .json({ message: 'Email already exists' });
+    req.body.email = email.toLowerCase();
     next();
 });
 exports.validateUpdateEmail = validateUpdateEmail;
@@ -110,7 +128,6 @@ const validateUpdatePassword = (req, res, next) => __awaiter(void 0, void 0, voi
     if (!newPassword)
         errors.push('New password is required');
     const user = yield prisma_js_1.default.user.findUnique({ where: { id } });
-    console.log('Compare Password: ', yield (0, encryptedData_js_1.comparePassword)(password, user.password));
     //? Check if old password is correct
     if (!(yield (0, encryptedData_js_1.comparePassword)(password, user.password))) {
         errors.push('Wrong credentials');

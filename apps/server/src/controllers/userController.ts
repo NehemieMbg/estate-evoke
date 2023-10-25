@@ -10,8 +10,8 @@ export const getAllUsers: RequestHandler = async (req, res) => {
     const users = await prisma.user.findMany({
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
+        name: true,
+        username: true,
         avatar: true,
       },
     });
@@ -32,8 +32,8 @@ export const getCurrentUser: RequestHandler = async (req: UserRequest, res) => {
       where: { id: id as string },
       select: {
         id: true,
-        firstName: true,
-        lastName: true,
+        name: true,
+        username: true,
         avatar: true,
         bio: true,
         email: true,

@@ -29,8 +29,8 @@ export const authMiddleware = async (
         id: true,
         email: true,
         bio: true,
-        firstName: true,
-        lastName: true,
+        name: true,
+        username: true,
       },
     });
 

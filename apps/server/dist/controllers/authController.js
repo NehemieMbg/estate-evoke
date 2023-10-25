@@ -19,13 +19,13 @@ const http_status_codes_1 = require("http-status-codes");
 const encryptedData_2 = require("../utils/encryptedData");
 // ? CREATE USER
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, firstName, lastName, password } = req.body;
+    const { email, name, username, password } = req.body;
     try {
         const user = yield prisma_1.default.user.create({
             data: {
                 email,
-                firstName,
-                lastName,
+                name,
+                username,
                 password: yield (0, encryptedData_1.hashPassword)(password),
             },
         });
@@ -48,15 +48,23 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createUser = createUser;
+//? LOG USER IN
 const logUserIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
+    const { email, username, password } = req.body;
+    console.log(req.body);
     try {
-        const user = yield prisma_1.default.user.findUnique({ where: { email } });
+        let user;
+        if (email) {
+            user = yield prisma_1.default.user.findUnique({ where: { email } });
+        }
+        else if (username) {
+            user = yield prisma_1.default.user.findUnique({ where: { username } });
+        }
         if (!user)
-            throw new Error('Wrong email or password');
+            throw new Error('Wrong email/username or password');
         const isPasswordValid = yield (0, encryptedData_2.comparePassword)(password, user.password);
         if (!isPasswordValid)
-            throw new Error('Wrong email or password');
+            throw new Error('Wrong email/username or password');
         const token = (0, encryptedData_1.createToken)(user.id);
         res
             .cookie('jwt', token, {

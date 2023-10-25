@@ -4,8 +4,8 @@ export type User = {
   id: string;
   email: string;
   bio: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  username: string;
   password: string;
   createdAt: Date;
   updatedAt: Date;
