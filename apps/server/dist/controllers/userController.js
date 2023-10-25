@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserCredentials = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
+exports.deleteUser = exports.updateUserPassword = exports.updateUserEmail = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const prisma_1 = __importDefault(require("../utils/prisma"));
 const encryptedData_1 = require("../utils/encryptedData");
@@ -82,19 +82,18 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.updateUser = updateUser;
-// ? UPDATE USER CREDENTIALS
-// ? Split this to two function: update email and update password ?
-const updateUserCredentials = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // ! id is temporary, must be changed to user id
-    const { id, email, newPassword } = req.body;
+//? UPDATE USER EMAIL
+const updateUserEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.user;
+    const { email } = req.body;
     try {
         yield prisma_1.default.user.update({
             where: { id: id },
             data: {
                 email,
-                password: yield (0, encryptedData_1.hashPassword)(newPassword),
             },
         });
+        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'User email updated' });
     }
     catch (error) {
         if (error instanceof Error)
@@ -103,7 +102,28 @@ const updateUserCredentials = (req, res) => __awaiter(void 0, void 0, void 0, fu
             res.json({ message: 'Something went wrong' });
     }
 });
-exports.updateUserCredentials = updateUserCredentials;
+exports.updateUserEmail = updateUserEmail;
+// ? UPDATE USER PASSWORD
+const updateUserPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.user;
+    const { newPassword } = req.body;
+    try {
+        yield prisma_1.default.user.update({
+            where: { id: id },
+            data: {
+                password: yield (0, encryptedData_1.hashPassword)(newPassword),
+            },
+        });
+        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'User password updated' });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.json({ message: error.message });
+        else
+            res.json({ message: 'Something went wrong' });
+    }
+});
+exports.updateUserPassword = updateUserPassword;
 // ? DELETE USER
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.user;

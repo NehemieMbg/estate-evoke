@@ -4,8 +4,6 @@ import { createToken, hashPassword } from '../utils/encryptedData';
 import { StatusCodes } from 'http-status-codes';
 import { comparePassword } from '../utils/encryptedData';
 
-import jwt from 'jsonwebtoken';
-
 // ? CREATE USER
 export const createUser: RequestHandler = async (req, res) => {
   const { email, firstName, lastName, password } = req.body;

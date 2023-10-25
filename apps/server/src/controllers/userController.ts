@@ -39,6 +39,7 @@ export const getCurrentUser: RequestHandler = async (req: UserRequest, res) => {
         email: true,
       },
     });
+
     res.status(StatusCodes.OK).json({ message: 'User found', data: user });
   } catch (error) {
     if (error instanceof Error) res.json({ message: error.message });
@@ -65,20 +66,46 @@ export const updateUser: RequestHandler = async (req: UserRequest, res) => {
   }
 };
 
-// ? UPDATE USER CREDENTIALS
-// ? Split this to two function: update email and update password ?
-export const updateUserCredentials: RequestHandler = async (req, res) => {
-  // ! id is temporary, must be changed to user id
-  const { id, email, newPassword } = req.body;
+//? UPDATE USER EMAIL
+export const updateUserEmail: RequestHandler = async (
+  req: UserRequest,
+  res
+) => {
+  const { id } = req.user as User;
+  const { email } = req.body;
 
   try {
     await prisma.user.update({
       where: { id: id as string },
       data: {
         email,
+      },
+    });
+
+    res.status(StatusCodes.OK).json({ message: 'User email updated' });
+  } catch (error) {
+    if (error instanceof Error) res.json({ message: error.message });
+    else res.json({ message: 'Something went wrong' });
+  }
+};
+
+// ? UPDATE USER PASSWORD
+export const updateUserPassword: RequestHandler = async (
+  req: UserRequest,
+  res
+) => {
+  const { id } = req.user as User;
+  const { newPassword } = req.body;
+
+  try {
+    await prisma.user.update({
+      where: { id: id as string },
+      data: {
         password: await hashPassword(newPassword),
       },
     });
+
+    res.status(StatusCodes.OK).json({ message: 'User password updated' });
   } catch (error) {
     if (error instanceof Error) res.json({ message: error.message });
     else res.json({ message: 'Something went wrong' });

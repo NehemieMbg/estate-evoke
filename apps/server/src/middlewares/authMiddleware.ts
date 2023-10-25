@@ -1,9 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import prisma from '../utils/prisma';
 import { User, UserRequest } from '../types/types';
 
+//? Check if user is logged in
 export const authMiddleware = async (
   req: UserRequest,
   res: Response,
@@ -21,6 +22,7 @@ export const authMiddleware = async (
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET!) as {
       id: string;
     };
+
     const user = await prisma.user.findUnique({
       where: { id: decodedToken.id },
       select: {
