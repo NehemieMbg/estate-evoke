@@ -15,4 +15,3 @@ export const auth = {
     alreadyAccountLabel: 'Already have an account ?',
   },
 };
-//test
