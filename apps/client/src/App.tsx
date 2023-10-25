@@ -1,9 +1,16 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { HomeLayout } from './pages';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomeLayout />,
+    children: [],
+  },
+]);
+
 function App() {
-  return (
-    <div>
-      <h1 className="text-7xl uppercase">Hello World</h1>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
