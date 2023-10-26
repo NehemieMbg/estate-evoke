@@ -43,8 +43,6 @@ export const logUserIn: RequestHandler = async (req, res) => {
     password: string;
   };
 
-  console.log(req.body);
-
   try {
     let user;
 
@@ -70,8 +68,12 @@ export const logUserIn: RequestHandler = async (req, res) => {
       .status(StatusCodes.OK)
       .json({ message: 'User logged in' });
   } catch (error) {
-    if (error instanceof Error) res.json({ message: error.message });
-    else res.json({ message: 'Something went wrong' });
+    if (error instanceof Error)
+      res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+    else
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ message: 'Something went wrong' });
   }
 };
 

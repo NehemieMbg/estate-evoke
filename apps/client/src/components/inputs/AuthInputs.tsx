@@ -8,6 +8,9 @@ type AuthInputsProps = {
   name: string;
   error?: string;
   placeholder?: string;
+  required?: boolean;
+  inputRef?: React.RefObject<HTMLInputElement>;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const AuthInputs: React.FC<AuthInputsProps> = ({
@@ -18,6 +21,9 @@ const AuthInputs: React.FC<AuthInputsProps> = ({
   linkLabel,
   error,
   placeholder,
+  required,
+  inputRef,
+  onChange,
 }) => {
   return (
     <div className="w-full font-roboto">
@@ -38,15 +44,16 @@ const AuthInputs: React.FC<AuthInputsProps> = ({
         type={type}
         id={name}
         name="name"
+        required={required}
         placeholder={placeholder}
+        ref={inputRef}
+        onChange={onChange}
         className={`mt-1 w-full border-2 border-neutral-200 px-5 py-3.5 rounded-xl font-roboto text-[15px] font-light outline-blue-400 hover:input-shadow focus:input-shadow
 		${error ? 'border-red-300' : 'border-neutral-200'}
 		${label?.toLocaleLowerCase().includes('username') ? 'lowercase' : ''}
 		`}
       />
-      {error && (
-        <p className="text-sm text-red-400 mt-1">Wrong Email or Password!</p>
-      )}
+      {error && <p className="text-sm text-red-400 mt-1">{error}</p>}
     </div>
   );
 };

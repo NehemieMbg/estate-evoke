@@ -1,12 +1,11 @@
 import { Outlet } from 'react-router-dom';
-import { SignIn, SignUp } from '../components';
+import { Auth } from '.';
 
 const HomeLayout = () => {
   return (
     <div>
       <main className="min-h-screen w-screen">
-        {/* <SignIn /> */}
-        <SignUp />
+        <Auth />
         <Outlet />
       </main>
     </div>

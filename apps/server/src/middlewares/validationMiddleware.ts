@@ -8,7 +8,7 @@ import { comparePassword } from '../utils/encryptedData.js';
 export const validateCreateUser: RequestHandler = async (req, res, next) => {
   const errors = [];
 
-  const { email, name, username, password, confirmPassword } = req.body;
+  const { email, name, username, password } = req.body;
 
   const user = await prisma.user.findUnique({ where: { email } });
   const usernameExists = await prisma.user.findUnique({ where: { username } });
@@ -19,7 +19,6 @@ export const validateCreateUser: RequestHandler = async (req, res, next) => {
   if (!name) errors.push('Name is required');
   if (!username) errors.push('Username is required');
   if (!password) errors.push('Password is required');
-  if (!confirmPassword) errors.push('Confirm password is required');
 
   req.body.username = String(username).toLowerCase();
   req.body.email = String(email).toLowerCase() as string;

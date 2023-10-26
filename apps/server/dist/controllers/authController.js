@@ -51,7 +51,6 @@ exports.createUser = createUser;
 //? LOG USER IN
 const logUserIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, username, password } = req.body;
-    console.log(req.body);
     try {
         let user;
         if (email) {
@@ -77,9 +76,11 @@ const logUserIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     catch (error) {
         if (error instanceof Error)
-            res.json({ message: error.message });
+            res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ message: error.message });
         else
-            res.json({ message: 'Something went wrong' });
+            res
+                .status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR)
+                .json({ message: 'Something went wrong' });
     }
 });
 exports.logUserIn = logUserIn;

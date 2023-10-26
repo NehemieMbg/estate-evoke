@@ -19,7 +19,7 @@ const encryptedData_js_1 = require("../utils/encryptedData.js");
 //? Validates user data when creating it
 const validateCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = [];
-    const { email, name, username, password, confirmPassword } = req.body;
+    const { email, name, username, password } = req.body;
     const user = yield prisma_js_1.default.user.findUnique({ where: { email } });
     const usernameExists = yield prisma_js_1.default.user.findUnique({ where: { username } });
     if (!email)
@@ -34,8 +34,6 @@ const validateCreateUser = (req, res, next) => __awaiter(void 0, void 0, void 0,
         errors.push('Username is required');
     if (!password)
         errors.push('Password is required');
-    if (!confirmPassword)
-        errors.push('Confirm password is required');
     req.body.username = String(username).toLowerCase();
     req.body.email = String(email).toLowerCase();
     if (errors.length > 0) {
