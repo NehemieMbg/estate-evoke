@@ -22,7 +22,12 @@ const SignUp = () => {
             <AuthInputs label="Username" type="text" name="username" />
           </div>
           <AuthInputs label="Email" type="email" name="email" />
-          <AuthInputs label="Password" name="password" type="password" />
+          <AuthInputs
+            label="Password"
+            name="password"
+            type="password"
+            placeholder="8+ characters"
+          />
           <AuthBtn label="Create Account" type="submit" />
         </form>
 

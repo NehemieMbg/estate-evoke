@@ -6,7 +6,7 @@ const HomeLayout = () => {
     <div>
       <main className="min-h-screen w-screen">
         <SignIn />
-        {/* <SignUp /> */}
+        <SignUp />
         <Outlet />
       </main>
     </div>
