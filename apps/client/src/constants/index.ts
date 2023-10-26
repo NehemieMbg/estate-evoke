@@ -1,6 +1,6 @@
 export const auth = {
   signIn: {
-    label: 'Sign in to Evoke-Estate',
+    label: 'Sign in',
     emailLabel: 'Email',
     passwordLabel: 'Password',
     buttonLabel: 'Sign in',
@@ -8,7 +8,7 @@ export const auth = {
     noAccountLabel: "Don't have an account ?",
   },
   signUp: {
-    label: 'Sign up to Evoke-Estate',
+    label: 'Sign up',
     emailLabel: 'Email',
     passwordLabel: 'Password',
     buttonLabel: 'Create Account',
