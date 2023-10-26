@@ -13,7 +13,9 @@ const SignIn = () => {
         <button className="absolute flex gap-2 items-center top-6 right-6 pb-10 font-roboto font-light">
           <XMarkIcon className="w-11 text-black hover:bg-neutral-100 transition-colors duration-200 rounded-full p-2" />
         </button>
-        <h1 className=" mb-10 text-2xl font-semibold">{signIn.label}</h1>
+        <h1 className=" mb-10 text-3xl font-semibold font-exo">
+          {signIn.label}
+        </h1>
         <form action="" className="w-full flex flex-col items-center gap-8">
           <AuthInputs
             label="Email or Username"

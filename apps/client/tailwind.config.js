@@ -6,6 +6,8 @@ export default {
       backgroundImage: {},
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+        exo: ['"Exo 2"', 'sans-serif'],
       },
     },
   },
