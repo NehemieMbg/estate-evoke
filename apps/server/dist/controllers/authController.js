@@ -28,6 +28,15 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 username,
                 password: yield (0, encryptedData_1.hashPassword)(password),
             },
+            select: {
+                id: true,
+                email: true,
+                name: true,
+                username: true,
+                avatar: true,
+                bio: true,
+                link: true,
+            },
         });
         //? Log the user automatically after creating the account
         const token = (0, encryptedData_1.createToken)(user.id);
@@ -38,7 +47,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
         })
             .status(http_status_codes_1.StatusCodes.CREATED)
-            .json({ message: 'User created' });
+            .json({ message: 'User created', data: user });
     }
     catch (error) {
         if (error instanceof Error)
@@ -72,7 +81,7 @@ const logUserIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
         })
             .status(http_status_codes_1.StatusCodes.OK)
-            .json({ message: 'User logged in' });
+            .json({ message: 'User logged in', data: user });
     }
     catch (error) {
         if (error instanceof Error)

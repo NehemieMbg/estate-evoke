@@ -17,6 +17,15 @@ export const createUser: RequestHandler = async (req, res) => {
         username,
         password: await hashPassword(password),
       },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        username: true,
+        avatar: true,
+        bio: true,
+        link: true,
+      },
     });
 
     //? Log the user automatically after creating the account
@@ -28,7 +37,7 @@ export const createUser: RequestHandler = async (req, res) => {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       })
       .status(StatusCodes.CREATED)
-      .json({ message: 'User created' });
+      .json({ message: 'User created', data: user });
   } catch (error) {
     if (error instanceof Error) res.json({ message: error.message });
     else res.json({ message: 'Something went wrong' });
@@ -66,7 +75,7 @@ export const logUserIn: RequestHandler = async (req, res) => {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       })
       .status(StatusCodes.OK)
-      .json({ message: 'User logged in' });
+      .json({ message: 'User logged in', data: user });
   } catch (error) {
     if (error instanceof Error)
       res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
