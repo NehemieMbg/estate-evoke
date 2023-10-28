@@ -14,7 +14,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="sticky top-0 py-3 px-6 border-b-2 border-b-neutral-100 border-opacity-0 flex items-center justify-between">
+    <nav className="sticky z-[99] top-0 py-3 px-6 border-b-2 bg-white border-b-neutral-100 border-opacity-0 flex items-center justify-between">
       <Link to={'/'} className="font-exo text-lg">
         evoke-estate
       </Link>

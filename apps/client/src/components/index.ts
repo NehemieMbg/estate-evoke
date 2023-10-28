@@ -7,3 +7,10 @@ export { default as CircularIndeterminate } from './progress/CircularIndetermina
 export { default as AccountManagement } from './sections/settings/AccountManagement';
 export { default as EditProfile } from './sections/settings/EditProfile';
 export { default as Password } from './sections/settings/Password';
+export { default as BannerInput } from './inputs/BannerInput';
+export { default as AvatarInput } from './inputs/AvatarInput';
+export { default as FormInputs } from './inputs/FormInputs';
+export { default as BioInput } from './inputs/BioInput';
+export { default as FormBtn } from './buttons/FormBtn';
+export { default as SettingsNav } from './navbar/SettingsNav';
+export { default as DeleteAccountCard } from './cards/DeleteAccountCard';

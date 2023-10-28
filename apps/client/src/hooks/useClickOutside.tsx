@@ -6,7 +6,7 @@ import { RefObject, useEffect } from 'react';
  * @param callback - action to close
  */
 export default function useClickOutside(
-  ref: RefObject<HTMLDivElement> | null,
+  ref: RefObject<HTMLDivElement | HTMLFormElement> | null,
   callback: () => void
 ) {
   const handler = (event: MouseEvent) => {

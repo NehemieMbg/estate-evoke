@@ -1,32 +1,30 @@
 import { Link } from 'react-router-dom';
 
-type FormInputsProps = {
+type BioInputProps = {
   label?: string;
   link?: string;
   linkLabel?: string;
-  type: string;
   name: string;
   error?: string;
   placeholder?: string;
+  underText?: string;
   required?: boolean;
   defaultValue?: string;
-  underText?: string;
-  inputRef?: React.RefObject<HTMLInputElement>;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputRef?: React.RefObject<HTMLTextAreaElement>;
+  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 };
 
-const FormInputs: React.FC<FormInputsProps> = ({
+const BioInput: React.FC<BioInputProps> = ({
   name,
-  type,
   label,
   link,
   linkLabel,
   error,
   defaultValue,
   placeholder,
+  underText,
   required,
   inputRef,
-  underText,
   onChange,
 }) => {
   return (
@@ -44,27 +42,27 @@ const FormInputs: React.FC<FormInputsProps> = ({
           </Link>
         )}
       </div>
-      <input
-        type={type}
+      <textarea
         id={name}
         name="name"
+        rows={6}
         required={required}
         defaultValue={defaultValue}
         placeholder={placeholder}
         ref={inputRef}
         onChange={onChange}
-        className={`mt-1 w-full border-2 border-neutral-200 px-5 py-3 rounded-xl font-roboto text-[15px] font-light outline-blue-400 hover:input-shadow focus:input-shadow
+        className={`mt-1 w-full border-2 border-neutral-200 px-5 py-3 rounded-xl font-roboto text-[15px] font-light outline-blue-400 hover:input-shadow focus:input-shadow min-h-[163px]
 		${error ? 'border-red-300' : 'border-neutral-200'}
 		${label?.toLocaleLowerCase().includes('username') ? 'lowercase' : ''}
 		`}
       />
       {error && <p className="text-sm text-red-400 mt-1">{error}</p>}
       {underText && (
-        <p className="mt-1.5 font-light text-neutral-400 font-exo text-[15px]">
+        <p className="text-neutral-400 font-exo font-light text-[15px]">
           {underText}
         </p>
       )}
     </div>
   );
 };
-export default FormInputs;
+export default BioInput;

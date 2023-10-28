@@ -62,7 +62,7 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
               My profile
             </Link>
             <Link
-              to={'/account'}
+              to={'/account/edit-profile'}
               onClick={() => setMenu(false)}
               className="hover:text-neutral-600"
             >
