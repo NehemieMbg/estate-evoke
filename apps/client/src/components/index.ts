@@ -4,3 +4,6 @@ export { default as Navbar } from './navbar/Navbar';
 export { default as Search } from './search-bar/Search';
 export { default as NavigationCard } from './cards/NavigationCard';
 export { default as CircularIndeterminate } from './progress/CircularIndeterminate';
+export { default as AccountManagement } from './sections/settings/AccountManagement';
+export { default as EditProfile } from './sections/settings/EditProfile';
+export { default as Password } from './sections/settings/Password';

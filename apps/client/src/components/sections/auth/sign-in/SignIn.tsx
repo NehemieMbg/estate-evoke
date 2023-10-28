@@ -1,6 +1,6 @@
 import { auth } from '../../../../constants';
 import AuthBtn from '../../../buttons/AuthBtn';
-import AuthInputs from '../../../inputs/AuthInputs';
+import AuthInputs from '../../../inputs/FormInputs';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useRef, useState } from 'react';
 import customFetch from '../../../../utils/customFetch';
@@ -15,8 +15,9 @@ import { useDispatch } from 'react-redux';
 import useClickOutside from '../../../../hooks/useClickOutside';
 
 const SignIn = () => {
-  const dispatch = useDispatch();
   const { signIn } = auth;
+  const dispatch = useDispatch();
+
   const modalRef = useRef<HTMLDivElement>(null);
   const identificationRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);

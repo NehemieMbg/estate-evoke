@@ -1,6 +1,6 @@
 import { auth } from '../../../../constants';
 import AuthBtn from '../../../buttons/AuthBtn';
-import AuthInputs from '../../../inputs/AuthInputs';
+import AuthInputs from '../../../inputs/FormInputs';
 import { XMarkIcon } from '@heroicons/react/20/solid';
 import { useRef, useState } from 'react';
 import customFetch from '../../../../utils/customFetch';
@@ -34,8 +34,6 @@ const SignUp = () => {
     email: '',
     password: '',
   });
-
-  console.log(errorsMsg);
 
   useClickOutside(modalRef, () => dispatch(closeModals()));
 

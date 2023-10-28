@@ -12,10 +12,9 @@ const Navbar = () => {
   const user = useSelector(
     (state: { auth: { user: User } }) => state.auth.user
   );
-  console.log(user);
 
   return (
-    <nav className="sticky top-0 py-4 border-b-2 border-b-neutral-100 border-opacity-0 px-10 flex items-center justify-between">
+    <nav className="sticky top-0 py-3 px-6 border-b-2 border-b-neutral-100 border-opacity-0 flex items-center justify-between">
       <Link to={'/'} className="font-exo text-lg">
         evoke-estate
       </Link>

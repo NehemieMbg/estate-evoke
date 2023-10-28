@@ -15,3 +15,25 @@ export const auth = {
     alreadyAccountLabel: 'Already have an account ?',
   },
 };
+
+export const settingsNav = [
+  { label: 'Edit Profile', path: '/account/edit-profile' },
+  { label: 'Account management', path: '/account/management' },
+  { label: 'Password', path: '/account/password' },
+];
+
+export const settingsPages = {
+  editProfile: {
+    title: 'Edit Profile',
+    description:
+      'Keep your personal details private. Information you add here is visible to any who can view your profile.',
+  },
+  manageAccount: {
+    title: 'Account Management',
+    description: 'Make changes to your personal information or account type.',
+  },
+  password: {
+    title: 'Password',
+    description: 'Manage your password.',
+  },
+};

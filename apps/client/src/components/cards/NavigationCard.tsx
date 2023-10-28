@@ -43,16 +43,33 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
 		${menu ? 'opacity-100 visible' : 'opacity-0 invisible'}
 	  `}
         >
-          <Link to={'.'} className="p-5 flex flex-col items-center mb-6">
+          <Link
+            to={`/${user.username}`}
+            onClick={() => setMenu(false)}
+            className="p-5 flex flex-col items-center mb-6"
+          >
             <div className="bg-neutral-300 h-16 aspect-square rounded-full overflow-hidden mb-3"></div>
             <h3 className="text-lg font-exo">{user.name}</h3>
             <p className="font-light">{user.email}</p>
           </Link>
-          <div className="mb-5">
-            <Link to={'.'} className="p-5 hover:text-neutral-600">
+
+          <div className="flex flex-col gap-3 p-5">
+            <Link
+              to={`/${user.username}`}
+              onClick={() => setMenu(false)}
+              className=" hover:text-neutral-600"
+            >
+              My profile
+            </Link>
+            <Link
+              to={'/account'}
+              onClick={() => setMenu(false)}
+              className="hover:text-neutral-600"
+            >
               Settings
             </Link>
           </div>
+
           <div className="p-5  border-t border-neutral-300">
             <button
               onClick={logout}
