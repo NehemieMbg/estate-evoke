@@ -4,6 +4,9 @@ export default {
   theme: {
     extend: {
       backgroundImage: {},
+      maxWidth: {
+        'screen-wide': '1728px',
+      },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
