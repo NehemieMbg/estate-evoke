@@ -3,7 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
-      backgroundImage: {},
+      backgroundImage: {
+        'bg-profile': "url('/bg-profile.png')",
+      },
       maxWidth: {
         'screen-wide': '1728px',
       },

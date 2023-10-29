@@ -38,7 +38,7 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
 
         <div
           ref={menuRef}
-          className={`absolute z-[99] bg-white border-[1px] border-neutral-300 w-80 right-0 mt-5 rounded-xl
+          className={`absolute z-[99] bg-white border-[1px] border-neutral-300 w-80 right-0 mt-5 rounded-md
 		   transition-all duration-200
 		${menu ? 'opacity-100 visible' : 'opacity-0 invisible'}
 	  `}

@@ -13,6 +13,10 @@
   scroll-behavior: smooth;
 }
 
+html {
+  min-height: 100vh;
+}
+
 body {
   /* //? TEMP BACKGROUND!!! */
   /* background-image: url('temp-bg.jpg'); */
@@ -20,6 +24,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   font-family: 'Roboto', sans-serif;
+  min-height: 100vh;
 }
 
 @layer components {
@@ -70,5 +75,9 @@ body {
     font-size: 15px;
     font-weight: 300;
     margin-bottom: 32px;
+  }
+
+  .profile {
+    min-height: calc(100vh - 64px);
   }
 }

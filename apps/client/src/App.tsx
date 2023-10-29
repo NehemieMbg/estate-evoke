@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { HomeLayout, SettingsLayout } from './pages';
+import { HomeLayout, ProfileLayout, SettingsLayout } from './pages';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { homeLoader } from './utils/loaders/homeLoader';
-import { AccountManagement, EditProfile, Password } from './components';
+import { AccountManagement, EditProfile, Password, Work } from './components';
 import { managementAction } from './utils/actions/managementAction';
 import { editProfileAction } from './utils/actions/editProfileAction';
 import { deleteUserAction } from './utils/actions/deleteUserAction';
@@ -16,7 +16,11 @@ const router = createBrowserRouter([
     element: <HomeLayout />,
     loader: homeLoader,
     children: [
-      { path: ':username', element: <h1>Home</h1> },
+      {
+        path: ':username',
+        element: <ProfileLayout />,
+        children: [{ index: true, element: <Work /> }],
+      },
       {
         path: 'account',
         element: <SettingsLayout />,

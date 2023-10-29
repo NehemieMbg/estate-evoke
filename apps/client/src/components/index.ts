@@ -14,3 +14,4 @@ export { default as BioInput } from './inputs/BioInput';
 export { default as FormBtn } from './buttons/FormBtn';
 export { default as SettingsNav } from './navbar/SettingsNav';
 export { default as DeleteAccountCard } from './cards/DeleteAccountCard';
+export { default as Work } from './sections/profile/Work';
