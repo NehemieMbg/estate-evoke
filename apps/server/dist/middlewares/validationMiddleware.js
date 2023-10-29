@@ -119,24 +119,18 @@ const validateCredentials = (req, res, next) => __awaiter(void 0, void 0, void 0
 exports.validateCredentials = validateCredentials;
 //? Validates user password when updating it
 const validateUpdatePassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { password, confirmPassword, newPassword } = req.body;
+    const { password, newPassword } = req.body;
     const errors = [];
     const { id } = req.user;
     //? Check user inputs
     if (!password)
         errors.push('Password is required');
-    if (!confirmPassword)
-        errors.push('Confirm password is required');
     if (!newPassword)
         errors.push('New password is required');
     const user = yield prisma_js_1.default.user.findUnique({ where: { id } });
     //? Check if old password is correct
     if (!(yield (0, encryptedData_js_1.comparePassword)(password, user.password))) {
-        errors.push('Wrong credentials');
-    }
-    //? Check if new password and confirm password match
-    if (newPassword !== confirmPassword) {
-        errors.push('Passwords do not match');
+        errors.push('Wrong password');
     }
     //? Return errors if any
     if (errors.length > 0) {

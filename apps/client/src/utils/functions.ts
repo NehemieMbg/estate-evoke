@@ -82,3 +82,55 @@ export const setEditProfileErrors = (
       setErrorMsg((prev) => ({ ...prev, name: error }));
   }
 };
+
+export const setManageAccountError = (
+  errStr: string,
+  setErrorMsg: React.Dispatch<
+    React.SetStateAction<{
+      username: string;
+      email: string;
+    }>
+  >
+) => {
+  const errors = errStr.split(', ');
+  setErrorMsg({
+    username: '',
+    email: '',
+  });
+
+  for (const error of errors) {
+    if (error.toLocaleLowerCase().includes('username'))
+      setErrorMsg((prev) => ({ ...prev, username: error }));
+
+    if (error.toLocaleLowerCase().includes('email'))
+      setErrorMsg((prev) => ({ ...prev, email: error }));
+  }
+};
+
+export const setPasswordError = (
+  errStr: string,
+  setErrorMsg: React.Dispatch<
+    React.SetStateAction<{
+      password: string;
+      newPassword: string;
+    }>
+  >
+) => {
+  const errors = errStr.split(', ');
+  setErrorMsg({
+    password: '',
+    newPassword: '',
+  });
+
+  for (const error of errors) {
+    if (
+      (error.toLocaleLowerCase().includes('password') &&
+        !error.toLocaleLowerCase().includes('new')) ||
+      error.toLocaleLowerCase().includes('wrong')
+    )
+      setErrorMsg((prev) => ({ ...prev, password: error }));
+
+    if (error.toLocaleLowerCase().includes('new'))
+      setErrorMsg((prev) => ({ ...prev, newPassword: error }));
+  }
+};

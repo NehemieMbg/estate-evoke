@@ -1,37 +1,48 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { settingsPages } from '../../../constants';
 import { FormBtn, FormInputs } from '../..';
+import { Form, useActionData, useNavigation } from 'react-router-dom';
+import { clearsInputRef, setPasswordError } from '../../../utils/functions';
 
 const Password = () => {
   const { password } = settingsPages;
+  const errorsMsg = useActionData();
+  const navigation = useNavigation();
+  const isLoading = navigation.state === 'submitting';
 
   const passwordRef = useRef<HTMLInputElement>(null);
   const newPasswordRef = useRef<HTMLInputElement>(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    password: '',
+    newPassword: '',
+  });
 
-  const handlePasswordUpdate = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  useEffect(() => {
+    if (typeof errorsMsg === 'string') {
+      setPasswordError(errorsMsg, setErrors);
+    } else {
+      setErrors({
+        password: '',
+        newPassword: '',
+      });
 
-    setIsLoading(true);
-
-    setIsLoading(false);
-  };
+      clearsInputRef(passwordRef, newPasswordRef);
+    }
+  }, [errorsMsg, setErrors]);
 
   return (
     <div className="font-roboto">
       <h1 className="setting-title">{password.title}</h1>
       <p className="settings-description">{password.description}</p>
 
-      <form
-        onSubmit={handlePasswordUpdate}
-        className="w-full flex flex-col gap-6"
-      >
+      <Form method="patch" className="w-full flex flex-col gap-6">
         <FormInputs
           label="Current password*"
           name="password"
           type="password"
           inputRef={passwordRef}
+          error={errors.password}
           required
         />
         <FormInputs
@@ -39,6 +50,7 @@ const Password = () => {
           name="newPassword"
           type="password"
           inputRef={newPasswordRef}
+          error={errors.newPassword}
           underText="Must be at least 8 characters long and contain at least one number and one special character."
           required
         />
@@ -50,7 +62,7 @@ const Password = () => {
             isLoading={isLoading}
           />
         </div>
-      </form>
+      </Form>
     </div>
   );
 };

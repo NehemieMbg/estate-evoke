@@ -131,25 +131,19 @@ export const validateUpdatePassword: RequestHandler = async (
   res,
   next
 ) => {
-  const { password, confirmPassword, newPassword } = req.body;
+  const { password, newPassword } = req.body;
   const errors = [];
   const { id } = req.user as User;
 
   //? Check user inputs
   if (!password) errors.push('Password is required');
-  if (!confirmPassword) errors.push('Confirm password is required');
   if (!newPassword) errors.push('New password is required');
 
   const user = await prisma.user.findUnique({ where: { id } });
 
   //? Check if old password is correct
   if (!(await comparePassword(password, user!.password))) {
-    errors.push('Wrong credentials');
-  }
-
-  //? Check if new password and confirm password match
-  if (newPassword !== confirmPassword) {
-    errors.push('Passwords do not match');
+    errors.push('Wrong password');
   }
 
   //? Return errors if any

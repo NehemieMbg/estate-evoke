@@ -50,7 +50,7 @@ const EditProfile = () => {
           name="name"
           error={errors.name}
           defaultValue={user?.name}
-          // required
+          required
         />
         <FormInputs
           label="Location"

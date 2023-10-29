@@ -4,8 +4,10 @@ import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { homeLoader } from './utils/loaders/homeLoader';
 import { AccountManagement, EditProfile, Password } from './components';
+import { managementAction } from './utils/actions/managementAction';
 import { editProfileAction } from './utils/actions/editProfileAction';
 import { deleteUserAction } from './utils/actions/deleteUserAction';
+import { passwordAction } from './utils/actions/passwordAction';
 
 const router = createBrowserRouter([
   {
@@ -25,8 +27,12 @@ const router = createBrowserRouter([
             element: <EditProfile />,
             action: editProfileAction,
           },
-          { path: 'management', element: <AccountManagement /> },
-          { path: 'password', element: <Password /> },
+          {
+            path: 'management',
+            element: <AccountManagement />,
+            action: managementAction,
+          },
+          { path: 'password', element: <Password />, action: passwordAction },
         ],
       },
     ],
