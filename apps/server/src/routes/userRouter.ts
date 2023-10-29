@@ -4,11 +4,11 @@ import {
   getAllUsers,
   getCurrentUser,
   updateUser,
-  updateUserEmail,
+  updateUserCredentials,
   updateUserPassword,
 } from '../controllers/userController';
 import {
-  validateUpdateEmail,
+  validateCredentials,
   validateUpdatePassword,
   validateUpdateUser,
 } from '../middlewares/validationMiddleware';
@@ -26,8 +26,8 @@ router
   .delete(deleteUser);
 
 router
-  .route('/user/credentials/email')
-  .patch(validateUpdateEmail, updateUserEmail);
+  .route('/user/credentials')
+  .patch(validateCredentials, updateUserCredentials);
 router
   .route('/user/credentials/password')
   .patch(validateUpdatePassword, updateUserPassword);

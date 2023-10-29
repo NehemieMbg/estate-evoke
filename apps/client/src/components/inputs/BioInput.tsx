@@ -44,7 +44,7 @@ const BioInput: React.FC<BioInputProps> = ({
       </div>
       <textarea
         id={name}
-        name="name"
+        name="bio"
         rows={6}
         required={required}
         defaultValue={defaultValue}

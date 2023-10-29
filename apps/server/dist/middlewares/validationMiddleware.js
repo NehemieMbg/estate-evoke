@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUpdatePassword = exports.validateUpdateEmail = exports.validateSignIn = exports.validateUpdateUser = exports.validateCreateUser = void 0;
+exports.validateUpdatePassword = exports.validateCredentials = exports.validateSignIn = exports.validateUpdateUser = exports.validateCreateUser = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const prisma_js_1 = __importDefault(require("../utils/prisma.js"));
 const encryptedData_js_1 = require("../utils/encryptedData.js");
@@ -48,14 +48,8 @@ exports.validateCreateUser = validateCreateUser;
 const validateUpdateUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = [];
     const { name, bio, link } = req.body;
-    const username = req.body.username.toLowerCase();
-    const user = yield prisma_js_1.default.user.findUnique({ where: { username } });
     if (!name)
         errors.push('Name is required');
-    if (!username)
-        errors.push('Username is required');
-    if (user && req.user.username !== user.username)
-        errors.push('Username already exists');
     if (bio && typeof bio !== 'string')
         errors.push('Bio must be a string');
     if (bio && bio.length > 150)
@@ -96,23 +90,33 @@ const validateSignIn = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.validateSignIn = validateSignIn;
 //? Validates user email when updating it
-const validateUpdateEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const validateCredentials = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = [];
+    let user;
     const { id } = req.user;
     const { email } = req.body;
+    const username = req.body.username.toLowerCase();
+    if (!username)
+        errors.push('Username is required');
     if (!email)
-        return res
-            .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
-            .json({ message: 'Email is required' });
-    const user = yield prisma_js_1.default.user.findUnique({ where: { email } });
-    // ? Check if email already exists and if it's not the user's email
+        errors.push('Email is required');
+    user = yield prisma_js_1.default.user.findUnique({ where: { username } });
+    if (user && req.user.username !== user.username)
+        errors.push('Username already exists');
+    user = yield prisma_js_1.default.user.findUnique({ where: { email } });
     if (user && user.id !== id)
+        errors.push('Email already exists');
+    req.body.email = email.toLowerCase();
+    req.body.username = username;
+    //? Return errors if any
+    if (errors.length > 0) {
         return res
             .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
-            .json({ message: 'Email already exists' });
-    req.body.email = email.toLowerCase();
+            .json({ message: errors.join(', ') });
+    }
     next();
 });
-exports.validateUpdateEmail = validateUpdateEmail;
+exports.validateCredentials = validateCredentials;
 //? Validates user password when updating it
 const validateUpdatePassword = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { password, confirmPassword, newPassword } = req.body;

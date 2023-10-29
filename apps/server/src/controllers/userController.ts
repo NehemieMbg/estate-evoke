@@ -34,8 +34,10 @@ export const getCurrentUser: RequestHandler = async (req: UserRequest, res) => {
         id: true,
         name: true,
         username: true,
+        location: true,
         avatar: true,
         bio: true,
+        link: true,
         email: true,
       },
     });
@@ -67,22 +69,23 @@ export const updateUser: RequestHandler = async (req: UserRequest, res) => {
 };
 
 //? UPDATE USER EMAIL
-export const updateUserEmail: RequestHandler = async (
+export const updateUserCredentials: RequestHandler = async (
   req: UserRequest,
   res
 ) => {
   const { id } = req.user as User;
-  const { email } = req.body;
+  const { email, username } = req.body;
 
   try {
     await prisma.user.update({
       where: { id: id as string },
       data: {
         email,
+        username,
       },
     });
 
-    res.status(StatusCodes.OK).json({ message: 'User email updated' });
+    res.status(StatusCodes.OK).json({ message: 'User credentials updated' });
   } catch (error) {
     if (error instanceof Error) res.json({ message: error.message });
     else res.json({ message: 'Something went wrong' });

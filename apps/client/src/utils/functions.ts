@@ -57,3 +57,28 @@ export const logout = async () => {
     return error;
   }
 };
+
+export const setEditProfileErrors = (
+  errStr: string,
+  setErrorMsg: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      location: string;
+      bio: string;
+      link: string;
+    }>
+  >
+) => {
+  const errors = errStr.split(', ');
+  setErrorMsg({
+    name: '',
+    location: '',
+    bio: '',
+    link: '',
+  });
+
+  for (const error of errors) {
+    if (error.toLocaleLowerCase().includes('name'))
+      setErrorMsg((prev) => ({ ...prev, name: error }));
+  }
+};

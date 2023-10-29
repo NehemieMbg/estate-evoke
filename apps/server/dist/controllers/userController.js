@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserPassword = exports.updateUserEmail = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
+exports.deleteUser = exports.updateUserPassword = exports.updateUserCredentials = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const prisma_1 = __importDefault(require("../utils/prisma"));
 const encryptedData_1 = require("../utils/encryptedData");
@@ -47,8 +47,10 @@ const getCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 id: true,
                 name: true,
                 username: true,
+                location: true,
                 avatar: true,
                 bio: true,
+                link: true,
                 email: true,
             },
         });
@@ -83,17 +85,18 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateUser = updateUser;
 //? UPDATE USER EMAIL
-const updateUserEmail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUserCredentials = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.user;
-    const { email } = req.body;
+    const { email, username } = req.body;
     try {
         yield prisma_1.default.user.update({
             where: { id: id },
             data: {
                 email,
+                username,
             },
         });
-        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'User email updated' });
+        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'User credentials updated' });
     }
     catch (error) {
         if (error instanceof Error)
@@ -102,7 +105,7 @@ const updateUserEmail = (req, res) => __awaiter(void 0, void 0, void 0, function
             res.json({ message: 'Something went wrong' });
     }
 });
-exports.updateUserEmail = updateUserEmail;
+exports.updateUserCredentials = updateUserCredentials;
 // ? UPDATE USER PASSWORD
 const updateUserPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.user;

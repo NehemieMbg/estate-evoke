@@ -3,7 +3,7 @@ import prisma from '../utils/prisma';
 import { createToken, hashPassword } from '../utils/encryptedData';
 import { StatusCodes } from 'http-status-codes';
 import { comparePassword } from '../utils/encryptedData';
-import { User } from '../types/types';
+import { User, UserRequest } from '../types/types';
 
 // ? CREATE USER
 export const createUser: RequestHandler = async (req, res) => {
@@ -67,6 +67,17 @@ export const logUserIn: RequestHandler = async (req, res) => {
     if (!isPasswordValid) throw new Error('Wrong email/username or password');
 
     const token = createToken(user.id);
+
+    // ? Remove password from user object
+    user = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      username: user.username,
+      avatar: user.avatar,
+      bio: user.bio,
+      link: user.link,
+    };
 
     res
       .cookie('jwt', token, {

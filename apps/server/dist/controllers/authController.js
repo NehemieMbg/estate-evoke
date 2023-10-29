@@ -74,6 +74,16 @@ const logUserIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!isPasswordValid)
             throw new Error('Wrong email/username or password');
         const token = (0, encryptedData_1.createToken)(user.id);
+        // ? Remove password from user object
+        user = {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            username: user.username,
+            avatar: user.avatar,
+            bio: user.bio,
+            link: user.link,
+        };
         res
             .cookie('jwt', token, {
             httpOnly: true,

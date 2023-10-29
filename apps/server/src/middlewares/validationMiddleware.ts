@@ -41,15 +41,8 @@ export const validateUpdateUser: RequestHandler = async (
   const errors = [];
 
   const { name, bio, link } = req.body;
-  const username = req.body.username.toLowerCase();
-
-  const user = await prisma.user.findUnique({ where: { username } });
 
   if (!name) errors.push('Name is required');
-
-  if (!username) errors.push('Username is required');
-  if (user && req.user!.username !== user.username)
-    errors.push('Username already exists');
 
   if (bio && typeof bio !== 'string') errors.push('Bio must be a string');
   if (bio && bio.length > 150)
@@ -97,28 +90,37 @@ export const validateSignIn: RequestHandler = async (req, res, next) => {
 };
 
 //? Validates user email when updating it
-export const validateUpdateEmail: RequestHandler = async (
+export const validateCredentials: RequestHandler = async (
   req: UserRequest,
   res,
   next
 ) => {
+  const errors = [];
+  let user;
   const { id } = req.user as User;
   const { email } = req.body;
 
-  if (!email)
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ message: 'Email is required' });
+  const username = req.body.username.toLowerCase();
 
-  const user = await prisma.user.findUnique({ where: { email } });
+  if (!username) errors.push('Username is required');
+  if (!email) errors.push('Email is required');
 
-  // ? Check if email already exists and if it's not the user's email
-  if (user && user.id !== id)
-    return res
-      .status(StatusCodes.BAD_REQUEST)
-      .json({ message: 'Email already exists' });
+  user = await prisma.user.findUnique({ where: { username } });
+  if (user && req.user!.username !== user.username)
+    errors.push('Username already exists');
+
+  user = await prisma.user.findUnique({ where: { email } });
+  if (user && user.id !== id) errors.push('Email already exists');
 
   req.body.email = email.toLowerCase();
+  req.body.username = username;
+
+  //? Return errors if any
+  if (errors.length > 0) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: errors.join(', ') });
+  }
 
   next();
 };

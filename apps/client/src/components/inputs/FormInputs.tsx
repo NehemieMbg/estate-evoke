@@ -47,7 +47,7 @@ const FormInputs: React.FC<FormInputsProps> = ({
       <input
         type={type}
         id={name}
-        name="name"
+        name={name}
         required={required}
         defaultValue={defaultValue}
         placeholder={placeholder}

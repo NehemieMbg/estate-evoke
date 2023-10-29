@@ -13,8 +13,8 @@ router
     .put(validationMiddleware_1.validateUpdateUser, userController_1.updateUser)
     .delete(userController_1.deleteUser);
 router
-    .route('/user/credentials/email')
-    .patch(validationMiddleware_1.validateUpdateEmail, userController_1.updateUserEmail);
+    .route('/user/credentials')
+    .patch(validationMiddleware_1.validateCredentials, userController_1.updateUserCredentials);
 router
     .route('/user/credentials/password')
     .patch(validationMiddleware_1.validateUpdatePassword, userController_1.updateUserPassword);
