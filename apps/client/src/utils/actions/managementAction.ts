@@ -1,6 +1,7 @@
 import { ActionFunctionArgs, redirect } from 'react-router-dom';
 import customFetch from '../customFetch';
 import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 
 export const managementAction = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
@@ -8,7 +9,7 @@ export const managementAction = async ({ request }: ActionFunctionArgs) => {
 
   try {
     await customFetch.patch('/users/user/credentials', data);
-
+    toast.success('Credentials updated successfully');
     return redirect('.');
   } catch (error) {
     if (error instanceof AxiosError) return error.response?.data.message;

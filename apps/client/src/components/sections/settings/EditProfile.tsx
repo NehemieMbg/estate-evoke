@@ -8,7 +8,6 @@ import { setEditProfileErrors } from '../../../utils/functions';
 
 const EditProfile = () => {
   const errorsMsg = useActionData();
-  console.log(errorsMsg);
   const navigation = useNavigation();
   const isLoading = navigation.state === 'submitting';
 

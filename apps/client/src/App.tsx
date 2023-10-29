@@ -8,6 +8,7 @@ import { managementAction } from './utils/actions/managementAction';
 import { editProfileAction } from './utils/actions/editProfileAction';
 import { deleteUserAction } from './utils/actions/deleteUserAction';
 import { passwordAction } from './utils/actions/passwordAction';
+import { Toaster } from 'react-hot-toast';
 
 const router = createBrowserRouter([
   {
@@ -43,6 +44,7 @@ function App() {
   return (
     <Provider store={store}>
       <RouterProvider router={router} />
+      <Toaster position="bottom-right" />
     </Provider>
   );
 }
