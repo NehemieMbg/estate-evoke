@@ -41,8 +41,9 @@ const EditProfile = () => {
       <h1 className="setting-title">{editProfile.title}</h1>
       <p className="settings-description">{editProfile.description}</p>
 
+      <AvatarInput user={user} />
+
       <Form method="post" className="flex flex-col gap-6 m-1">
-        <AvatarInput />
         <FormInputs
           label="Name*"
           type="text"

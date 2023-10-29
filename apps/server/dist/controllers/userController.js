@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,10 +35,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.updateUserPassword = exports.updateUserCredentials = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
+exports.deleteProfilePicture = exports.updateProfilePicture = exports.deleteUser = exports.updateUserPassword = exports.updateUserCredentials = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const prisma_1 = __importDefault(require("../utils/prisma"));
 const encryptedData_1 = require("../utils/encryptedData");
+const cloudinary_1 = __importDefault(require("cloudinary"));
+const fs = __importStar(require("fs/promises"));
 // ? GET ALL USERS
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -145,3 +170,61 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
+const updateProfilePicture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    try {
+        const user = yield prisma_1.default.user.findUnique({
+            where: { id: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id },
+        });
+        if (req.file) {
+            const { path } = req.file;
+            const response = yield cloudinary_1.default.v2.uploader.upload(path);
+            yield fs.unlink(req.file.path);
+            const updatedUser = yield prisma_1.default.user.update({
+                where: { id: (_b = req.user) === null || _b === void 0 ? void 0 : _b.id },
+                data: {
+                    avatar: response.secure_url,
+                    avatarPublicId: response.public_id,
+                },
+            });
+            if (user === null || user === void 0 ? void 0 : user.avatarPublicId) {
+                yield cloudinary_1.default.v2.uploader.destroy(user.avatarPublicId);
+            }
+        }
+        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'Profile picture updated' });
+    }
+    catch (error) {
+        console.log(error);
+        if (error instanceof Error)
+            res.json({ message: error.message });
+        else
+            res.json({ message: 'Something went wrong' });
+    }
+});
+exports.updateProfilePicture = updateProfilePicture;
+const deleteProfilePicture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c, _d;
+    try {
+        const user = yield prisma_1.default.user.findUnique({
+            where: { id: (_c = req.user) === null || _c === void 0 ? void 0 : _c.id },
+        });
+        if (user === null || user === void 0 ? void 0 : user.avatarPublicId) {
+            yield cloudinary_1.default.v2.uploader.destroy(user.avatarPublicId);
+        }
+        yield prisma_1.default.user.update({
+            where: { id: (_d = req.user) === null || _d === void 0 ? void 0 : _d.id },
+            data: {
+                avatar: null,
+                avatarPublicId: null,
+            },
+        });
+        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'Profile picture deleted' });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.json({ message: error.message });
+        else
+            res.json({ message: 'Something went wrong' });
+    }
+});
+exports.deleteProfilePicture = deleteProfilePicture;

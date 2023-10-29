@@ -48,7 +48,17 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
             onClick={() => setMenu(false)}
             className="p-5 flex flex-col items-center mb-6"
           >
-            <div className="bg-neutral-300 h-16 aspect-square rounded-full overflow-hidden mb-3"></div>
+            <div className="bg-neutral-300 h-16 aspect-square rounded-full overflow-hidden mb-3">
+              {user.avatar && (
+                <img
+                  src={user.avatar}
+                  alt={`${user.name} profile picture`}
+                  className="object-center object-cover w-full"
+                  height={50}
+                  width={50}
+                />
+              )}
+            </div>
             <h3 className="text-lg font-exo">{user.name}</h3>
             <p className="font-light">{user.email}</p>
           </Link>

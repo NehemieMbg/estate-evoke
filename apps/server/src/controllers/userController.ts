@@ -3,6 +3,8 @@ import { StatusCodes } from 'http-status-codes';
 import prisma from '../utils/prisma';
 import { hashPassword } from '../utils/encryptedData';
 import { User, UserRequest } from '../types/types';
+import cloudinary from 'cloudinary';
+import * as fs from 'fs/promises';
 
 // ? GET ALL USERS
 export const getAllUsers: RequestHandler = async (req, res) => {
@@ -125,6 +127,69 @@ export const deleteUser: RequestHandler = async (req: UserRequest, res) => {
       .clearCookie('jwt')
       .status(StatusCodes.OK)
       .json({ message: 'User deleted' });
+  } catch (error) {
+    if (error instanceof Error) res.json({ message: error.message });
+    else res.json({ message: 'Something went wrong' });
+  }
+};
+
+export const updateProfilePicture: RequestHandler = async (
+  req: UserRequest,
+  res
+) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user?.id as string },
+    });
+
+    if (req.file) {
+      const { path } = req.file;
+      const response = await cloudinary.v2.uploader.upload(path);
+      await fs.unlink(req.file.path);
+
+      const updatedUser = await prisma.user.update({
+        where: { id: req.user?.id as string },
+        data: {
+          avatar: response.secure_url,
+          avatarPublicId: response.public_id,
+        },
+      });
+
+      if (user?.avatarPublicId) {
+        await cloudinary.v2.uploader.destroy(user.avatarPublicId);
+      }
+    }
+
+    res.status(StatusCodes.OK).json({ message: 'Profile picture updated' });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof Error) res.json({ message: error.message });
+    else res.json({ message: 'Something went wrong' });
+  }
+};
+
+export const deleteProfilePicture: RequestHandler = async (
+  req: UserRequest,
+  res
+) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user?.id as string },
+    });
+
+    if (user?.avatarPublicId) {
+      await cloudinary.v2.uploader.destroy(user.avatarPublicId);
+    }
+
+    await prisma.user.update({
+      where: { id: req.user?.id as string },
+      data: {
+        avatar: null,
+        avatarPublicId: null,
+      },
+    });
+
+    res.status(StatusCodes.OK).json({ message: 'Profile picture deleted' });
   } catch (error) {
     if (error instanceof Error) res.json({ message: error.message });
     else res.json({ message: 'Something went wrong' });

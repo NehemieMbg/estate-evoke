@@ -1,8 +1,10 @@
 import { Router } from 'express';
 import {
+  deleteProfilePicture,
   deleteUser,
   getAllUsers,
   getCurrentUser,
+  updateProfilePicture,
   updateUser,
   updateUserCredentials,
   updateUserPassword,
@@ -12,6 +14,7 @@ import {
   validateUpdatePassword,
   validateUpdateUser,
 } from '../middlewares/validationMiddleware';
+import upload from '../middlewares/multerMiddleware';
 
 const router = Router();
 
@@ -24,6 +27,11 @@ router
   .get(getCurrentUser)
   .put(validateUpdateUser, updateUser)
   .delete(deleteUser);
+
+router
+  .route('/user/avatar')
+  .patch(upload.single('avatar'), updateProfilePicture)
+  .delete(deleteProfilePicture);
 
 router
   .route('/user/credentials')
