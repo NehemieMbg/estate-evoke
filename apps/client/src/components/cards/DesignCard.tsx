@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { DescriptionInput, FormInputs } from '..';
+import { DescriptionInput, FormBtn, FormInputs } from '..';
 import useClickOutside from '../../hooks/useClickOutside';
 import { useNavigation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -69,25 +69,25 @@ const DesignCard: React.FC<DesignCardProps> = ({
         <div className="w-full flex flex-col gap-6">
           <FormInputs name="title" type="text" label="Title" />
           <DescriptionInput name="description" label="Description" />
-          <FormInputs
+          {/* <FormInputs
             name="tag"
             type="text"
             label="Add Tags"
             placeholder="Max 5 tags, separated by commas."
             underText="Suggested Tags: interior, exterior, modern, rustic, contemporary, minimalist, vintage, landscaping, beachfront, sustainable."
-          />
+          /> */}
 
           <div className="mt-4 flex gap-4 justify-end items-center font-exo text-sm">
             <p onClick={() => setCardIsOpen(false)} className="cursor-pointer">
               Cancel
             </p>
 
-            <button
+            <FormBtn
               type="submit"
-              className=" text-white font-medium bg-black py-1.5 px-4 rounded-full hover:bg-opacity-80 transition-colors duration-200"
-            >
-              Publish
-            </button>
+              label="Publish"
+              className="text-sm"
+              isLoading={isLoading}
+            />
           </div>
         </div>
       </div>

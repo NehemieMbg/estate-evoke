@@ -5,6 +5,7 @@ import { hashPassword } from '../utils/encryptedData';
 import { User, UserRequest } from '../types/types';
 import cloudinary from 'cloudinary';
 import * as fs from 'fs/promises';
+import { off } from 'process';
 
 // ? GET ALL USERS
 export const getAllUsers: RequestHandler = async (req, res) => {
@@ -122,7 +123,22 @@ export const deleteUser: RequestHandler = async (req: UserRequest, res) => {
   const { id } = req.user as User;
 
   try {
+    const user = await prisma.user.findUnique({
+      where: { id: id as string },
+    });
+
+    if (user?.avatarPublicId)
+      await cloudinary.v2.uploader.destroy(user?.avatarPublicId as string);
+
     await prisma.user.delete({ where: { id: id as string } });
+
+    //! To add delete all posts of the user
+    const posts = await prisma.post.findMany({ where: { authorId: id } });
+    for (const post of posts) {
+      await cloudinary.v2.uploader.destroy(post.imagePublicId as string);
+    }
+    await prisma.post.deleteMany({ where: { authorId: id } });
+
     res
       .clearCookie('jwt')
       .status(StatusCodes.OK)

@@ -9,6 +9,7 @@ import { editProfileAction } from './utils/actions/editProfileAction';
 import { deleteUserAction } from './utils/actions/deleteUserAction';
 import { passwordAction } from './utils/actions/passwordAction';
 import { Toaster } from 'react-hot-toast';
+import { designAction } from './utils/actions/designAction';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,11 @@ const router = createBrowserRouter([
     element: <HomeLayout />,
     loader: homeLoader,
     children: [
-      { path: '/portfolio/new-design', element: <NewDesign /> },
+      {
+        path: '/portfolio/new-design',
+        element: <NewDesign />,
+        action: designAction,
+      },
       {
         path: ':username',
         element: <ProfileLayout />,

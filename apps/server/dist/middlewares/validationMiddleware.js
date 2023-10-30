@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUpdatePassword = exports.validateCredentials = exports.validateSignIn = exports.validateUpdateUser = exports.validateCreateUser = void 0;
+exports.validateUpdatePost = exports.validatePost = exports.validateUpdatePassword = exports.validateCredentials = exports.validateSignIn = exports.validateUpdateUser = exports.validateCreateUser = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const prisma_js_1 = __importDefault(require("../utils/prisma.js"));
 const encryptedData_js_1 = require("../utils/encryptedData.js");
@@ -141,3 +141,40 @@ const validateUpdatePassword = (req, res, next) => __awaiter(void 0, void 0, voi
     next();
 });
 exports.validateUpdatePassword = validateUpdatePassword;
+const validatePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { title, description } = req.body;
+    const errors = [];
+    if (!title)
+        errors.push('Title is required');
+    if (!description)
+        errors.push('Description is required');
+    if (errors.length > 0) {
+        return res
+            .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+            .json({ message: errors.join(', ') });
+    }
+    next();
+});
+exports.validatePost = validatePost;
+const validateUpdatePost = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { title, description } = req.body;
+    const { postId } = req.params;
+    const errors = [];
+    if (!title)
+        errors.push('Title is required');
+    if (!description)
+        errors.push('Description is required');
+    const post = yield prisma_js_1.default.post.findUnique({ where: { id: postId } });
+    if (!post)
+        errors.push('Post not found');
+    if ((post === null || post === void 0 ? void 0 : post.authorId) !== ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id))
+        errors.push('Not authorized');
+    if (errors.length > 0) {
+        return res
+            .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+            .json({ message: errors.join(', ') });
+    }
+    next();
+});
+exports.validateUpdatePost = validateUpdatePost;

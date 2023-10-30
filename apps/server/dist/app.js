@@ -8,12 +8,13 @@ const http_status_codes_1 = require("http-status-codes");
 const dotenv_1 = __importDefault(require("dotenv"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
-const userRouter_1 = __importDefault(require("./routes/userRouter"));
-const authRouter_1 = __importDefault(require("./routes/authRouter"));
 const authMiddleware_1 = require("./middlewares/authMiddleware");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const path_1 = __importDefault(require("path"));
+const userRouter_1 = __importDefault(require("./routes/userRouter"));
+const authRouter_1 = __importDefault(require("./routes/authRouter"));
+const postRouter_1 = __importDefault(require("./routes/postRouter"));
 dotenv_1.default.config();
 cloudinary_1.default.v2.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -32,6 +33,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express_1.default.static(path_1.default.resolve(__dirname, './public')));
 app.use('/api/v1/auth', authRouter_1.default);
 app.use('/api/v1/users', authMiddleware_1.authMiddleware, userRouter_1.default);
+app.use('/api/v1/posts', postRouter_1.default);
 app.use((err, req, res, next) => {
     res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
 });

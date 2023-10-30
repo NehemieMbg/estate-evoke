@@ -35,7 +35,7 @@ model Post {
   imagePublicId String?
   videoUrl      String?
   videoPublicId String?
-  content       String?
+  description   String?
   author        User       @relation(fields: [authorId], references: [id])
   authorId      String
   createdAt     DateTime   @default(now())

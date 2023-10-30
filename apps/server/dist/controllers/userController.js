@@ -156,7 +156,18 @@ exports.updateUserPassword = updateUserPassword;
 const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.user;
     try {
+        const user = yield prisma_1.default.user.findUnique({
+            where: { id: id },
+        });
+        if (user === null || user === void 0 ? void 0 : user.avatarPublicId)
+            yield cloudinary_1.default.v2.uploader.destroy(user === null || user === void 0 ? void 0 : user.avatarPublicId);
         yield prisma_1.default.user.delete({ where: { id: id } });
+        //! To add delete all posts of the user
+        const posts = yield prisma_1.default.post.findMany({ where: { authorId: id } });
+        for (const post of posts) {
+            yield cloudinary_1.default.v2.uploader.destroy(post.imagePublicId);
+        }
+        yield prisma_1.default.post.deleteMany({ where: { authorId: id } });
         res
             .clearCookie('jwt')
             .status(http_status_codes_1.StatusCodes.OK)

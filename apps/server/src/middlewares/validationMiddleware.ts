@@ -155,3 +155,45 @@ export const validateUpdatePassword: RequestHandler = async (
 
   next();
 };
+
+export const validatePost: RequestHandler = async (req, res, next) => {
+  const { title, description } = req.body;
+  const errors = [];
+
+  if (!title) errors.push('Title is required');
+  if (!description) errors.push('Description is required');
+
+  if (errors.length > 0) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: errors.join(', ') });
+  }
+
+  next();
+};
+
+export const validateUpdatePost: RequestHandler = async (
+  req: UserRequest,
+  res,
+  next
+) => {
+  const { title, description } = req.body;
+  const { postId } = req.params;
+  const errors = [];
+
+  if (!title) errors.push('Title is required');
+  if (!description) errors.push('Description is required');
+
+  const post = await prisma.post.findUnique({ where: { id: postId } });
+
+  if (!post) errors.push('Post not found');
+  if (post?.authorId !== req.user?.id) errors.push('Not authorized');
+
+  if (errors.length > 0) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ message: errors.join(', ') });
+  }
+
+  next();
+};

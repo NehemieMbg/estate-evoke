@@ -28,7 +28,7 @@ const DesignLayout = () => {
         </button>
       </div>
 
-      <Form>
+      <Form method="post" encType="multipart/form-data">
         <DesignInput
           inputRef={inputRef}
           imageUrl={imageUrl}
