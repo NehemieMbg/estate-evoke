@@ -37,7 +37,9 @@ const AvatarInput: React.FC<AvatarInputProps> = ({ user }) => {
   return (
     <form className="flex items-center gap-4 text-sm mb-6">
       <div className="relative h-16 aspect-square rounded-full bg-neutral-200 mr-2 overflow-hidden">
-        <img src={user?.avatar} alt="avatar" className="object-center" />
+        {user?.avatar && (
+          <img src={user?.avatar} alt="avatar" className="object-center" />
+        )}
         <div
           className={`absolute z-[10] left-[50%] translate-x-[-50%] translate-y-[-50%] top-[50%] text-white ${
             isLoading ? 'visible' : 'invisible'

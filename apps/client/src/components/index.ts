@@ -15,3 +15,8 @@ export { default as FormBtn } from './buttons/FormBtn';
 export { default as SettingsNav } from './navbar/SettingsNav';
 export { default as DeleteAccountCard } from './cards/DeleteAccountCard';
 export { default as Work } from './sections/profile/Work';
+export { default as Design } from './sections/portfolio/design/Design';
+export { default as DesignInput } from './inputs/DesignInput';
+export { default as DesignCard } from './cards/DesignCard';
+export { default as DeleteAccountBtn } from './buttons/DeleteAccountBtn';
+export { default as DescriptionInput } from './inputs/DescriptionInput';

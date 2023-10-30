@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { FormBtn } from '..';
+import { DeleteAccountBtn, FormBtn } from '..';
 import useClickOutside from '../../hooks/useClickOutside';
 import { Form, useNavigation } from 'react-router-dom';
 
@@ -48,7 +48,7 @@ const DeleteAccountCard: React.FC<DeleteAccountCardProps> = ({
         <div className="flex items-center gap-4">
           <FormBtn label="Keep account" onClick={() => setCardIsOpen(false)} />
 
-          <FormBtn
+          <DeleteAccountBtn
             label="Delete account"
             type="submit"
             isLoading={isLoading}

@@ -14,7 +14,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="sticky z-[99] top-0 py-3 px-6 border-b-2 bg-white border-b-neutral-100 border-opacity-0 flex items-center justify-between">
+    <nav className="sticky z-[99] top-0 py-2.5 px-6 border-b-2 bg-white shadow-sm border-b-neutral-100 border-opacity-0 flex items-center justify-between">
       <Link to={'/'} className="font-exo text-lg">
         evoke-estate
       </Link>
@@ -34,7 +34,15 @@ const Navbar = () => {
           </div>
         </>
       ) : (
-        <NavigationCard user={user} />
+        <div className="flex gap-6 items-center">
+          <Link
+            to={'/portfolio/new-design'}
+            className=" font-exo text-sm bg-neutral-100 font-medium border border-neutral-200 text-neutral-500 py-1.5 px-3.5 rounded-full hover:opacity-90 transition-colors duration-200 hover:bg-neutral-200 "
+          >
+            Share design
+          </Link>
+          <NavigationCard user={user} />
+        </div>
       )}
     </nav>
   );

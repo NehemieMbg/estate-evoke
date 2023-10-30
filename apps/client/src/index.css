@@ -50,6 +50,28 @@ body {
     }
   }
 
+  .submit-card {
+    background-color: white;
+    max-width: 994px;
+    padding: 54px;
+    width: 100%;
+    /* border-radius: 32px; */
+    border-radius: 4px;
+    z-index: 100;
+
+    @media only screen and (max-width: 768px) {
+      border-radius: 0;
+      max-width: 100%;
+      height: 100%;
+      padding: 16px 24px;
+
+      display: flex;
+      flex-direction: column;
+      /* align-items: center; */
+      justify-content: center;
+    }
+  }
+
   .backdrop {
     background-color: rgba(0, 0, 0, 0.3);
     position: fixed;
@@ -79,5 +101,11 @@ body {
 
   .profile {
     min-height: calc(100vh - 64px);
+  }
+
+  .design {
+    min-height: calc(100vh - 64px);
+    display: grid;
+    grid-template-rows: max-content 1fr;
   }
 }

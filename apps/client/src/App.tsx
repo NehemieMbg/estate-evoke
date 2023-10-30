@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { HomeLayout, ProfileLayout, SettingsLayout } from './pages';
+import { NewDesign, HomeLayout, ProfileLayout, SettingsLayout } from './pages';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { homeLoader } from './utils/loaders/homeLoader';
@@ -16,6 +16,7 @@ const router = createBrowserRouter([
     element: <HomeLayout />,
     loader: homeLoader,
     children: [
+      { path: '/portfolio/new-design', element: <NewDesign /> },
       {
         path: ':username',
         element: <ProfileLayout />,

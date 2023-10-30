@@ -10,9 +10,9 @@ const ProfileLayout = () => {
     <section className="w-full profile bg-neutral-100">
       <div className="h-[228px] w-full bg-neutral-200 overflow-hidden">
         <img
-          src="/bg-profile.jpg"
+          src="https://res.cloudinary.com/dkkykglbb/image/upload/v1698685096/h4gjh7f7p7xoxjfb00sy.jpg"
           alt=""
-          className="object-cover object-center w-full"
+          className="object-center w-full"
         />
       </div>
 
