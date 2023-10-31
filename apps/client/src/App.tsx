@@ -17,6 +17,7 @@ import { passwordAction } from './utils/actions/passwordAction';
 import { Toaster } from 'react-hot-toast';
 import { designAction } from './utils/actions/designAction';
 import { postsLoader } from './utils/loaders/postsLoader';
+import { profileLoader } from './utils/loaders/profileLoader';
 
 const router = createBrowserRouter([
   {
@@ -31,8 +32,9 @@ const router = createBrowserRouter([
         action: designAction,
       },
       {
-        path: ':username',
+        path: '/:username',
         element: <ProfileLayout />,
+        loader: profileLoader,
         children: [{ index: true, element: <Work /> }],
       },
       {

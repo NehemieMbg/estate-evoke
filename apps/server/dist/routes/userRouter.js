@@ -10,6 +10,7 @@ const multerMiddleware_1 = __importDefault(require("../middlewares/multerMiddlew
 const router = (0, express_1.Router)();
 // Get all users & create a user
 router.route('/').get(userController_1.getAllUsers);
+router.route('/:username').get(userController_1.getUser);
 // Get a user, update a user, delete a user
 router
     .route('/user')

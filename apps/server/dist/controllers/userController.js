@@ -35,12 +35,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProfilePicture = exports.updateProfilePicture = exports.deleteUser = exports.updateUserPassword = exports.updateUserCredentials = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = void 0;
+exports.deleteProfilePicture = exports.updateProfilePicture = exports.deleteUser = exports.updateUserPassword = exports.updateUserCredentials = exports.updateUser = exports.getCurrentUser = exports.getAllUsers = exports.getUser = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const prisma_1 = __importDefault(require("../utils/prisma"));
 const encryptedData_1 = require("../utils/encryptedData");
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const fs = __importStar(require("fs/promises"));
+const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield prisma_1.default.user.findUnique({
+            where: { username: req.params.username },
+            select: {
+                id: true,
+                name: true,
+                username: true,
+                location: true,
+                avatar: true,
+                bio: true,
+                link: true,
+                email: true,
+                posts: {
+                    select: {
+                        author: {
+                            select: {
+                                username: true,
+                                name: true,
+                            },
+                        },
+                        title: true,
+                        views: true,
+                        comments: true,
+                        likes: true,
+                    },
+                },
+            },
+        });
+        return res
+            .status(http_status_codes_1.StatusCodes.OK)
+            .json({ message: 'User found', data: user });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            return res.json({ message: error.message });
+        else
+            return res.json({ message: 'Something went wrong' });
+    }
+});
+exports.getUser = getUser;
 // ? GET ALL USERS
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

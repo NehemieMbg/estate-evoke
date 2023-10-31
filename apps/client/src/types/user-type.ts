@@ -2,6 +2,7 @@ import { Post } from './post-type';
 
 export type User = {
   id: string;
+  randomId: string;
   name: string;
   email: string;
   username: string;

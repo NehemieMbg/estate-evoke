@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
-import { authMiddleware } from './middlewares/authMiddleware';
+// import { authMiddleware } from './middlewares/authMiddleware';
 import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
 import path from 'path';
@@ -11,6 +11,7 @@ import path from 'path';
 import userRouter from './routes/userRouter';
 import authRouter from './routes/authRouter';
 import postRouter from './routes/postRouter';
+import { authMiddleware } from './middlewares/authMiddleware';
 
 dotenv.config();
 

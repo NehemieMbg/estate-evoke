@@ -4,6 +4,7 @@ import {
   deleteUser,
   getAllUsers,
   getCurrentUser,
+  getUser,
   updateProfilePicture,
   updateUser,
   updateUserCredentials,
@@ -15,12 +16,13 @@ import {
   validateUpdateUser,
 } from '../middlewares/validationMiddleware';
 import upload from '../middlewares/multerMiddleware';
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = Router();
 
 // Get all users & create a user
 router.route('/').get(getAllUsers);
-
+router.route('/:username').get(getUser);
 // Get a user, update a user, delete a user
 router
   .route('/user')

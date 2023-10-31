@@ -5,7 +5,45 @@ import { hashPassword } from '../utils/encryptedData';
 import { User, UserRequest } from '../types/types';
 import cloudinary from 'cloudinary';
 import * as fs from 'fs/promises';
-import { off } from 'process';
+
+export const getUser: RequestHandler = async (req, res) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { username: req.params.username },
+      select: {
+        id: true,
+        name: true,
+        username: true,
+        location: true,
+        avatar: true,
+        bio: true,
+        link: true,
+        email: true,
+        posts: {
+          select: {
+            author: {
+              select: {
+                username: true,
+                name: true,
+              },
+            },
+            title: true,
+            views: true,
+            comments: true,
+            likes: true,
+          },
+        },
+      },
+    });
+
+    return res
+      .status(StatusCodes.OK)
+      .json({ message: 'User found', data: user });
+  } catch (error) {
+    if (error instanceof Error) return res.json({ message: error.message });
+    else return res.json({ message: 'Something went wrong' });
+  }
+};
 
 // ? GET ALL USERS
 export const getAllUsers: RequestHandler = async (req, res) => {

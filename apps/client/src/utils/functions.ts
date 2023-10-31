@@ -134,3 +134,9 @@ export const setPasswordError = (
       setErrorMsg((prev) => ({ ...prev, newPassword: error }));
   }
 };
+
+export const generateRandom16DigitNumber = (): string => {
+  const randomNumber =
+    Math.floor(Math.random() * 9000000000000000) + 1000000000000000;
+  return randomNumber.toString();
+};

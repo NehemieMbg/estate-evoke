@@ -8,13 +8,14 @@ const http_status_codes_1 = require("http-status-codes");
 const dotenv_1 = __importDefault(require("dotenv"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
-const authMiddleware_1 = require("./middlewares/authMiddleware");
+// import { authMiddleware } from './middlewares/authMiddleware';
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const path_1 = __importDefault(require("path"));
 const userRouter_1 = __importDefault(require("./routes/userRouter"));
 const authRouter_1 = __importDefault(require("./routes/authRouter"));
 const postRouter_1 = __importDefault(require("./routes/postRouter"));
+const authMiddleware_1 = require("./middlewares/authMiddleware");
 dotenv_1.default.config();
 cloudinary_1.default.v2.config({
     cloud_name: process.env.CLOUD_NAME,

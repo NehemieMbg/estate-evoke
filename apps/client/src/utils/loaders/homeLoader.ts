@@ -7,7 +7,9 @@ export const homeLoader = async () => {
     const {
       data: { data },
     } = await customFetch.get('/users/user');
+
     store.dispatch(setUser(data));
+    console.log(data);
     return data;
   } catch (error) {
     if (error instanceof Error) {
