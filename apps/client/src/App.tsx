@@ -3,13 +3,20 @@ import { NewDesign, HomeLayout, ProfileLayout, SettingsLayout } from './pages';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { homeLoader } from './utils/loaders/homeLoader';
-import { AccountManagement, EditProfile, Password, Work } from './components';
+import {
+  AccountManagement,
+  EditProfile,
+  Home,
+  Password,
+  Work,
+} from './components';
 import { managementAction } from './utils/actions/managementAction';
 import { editProfileAction } from './utils/actions/editProfileAction';
 import { deleteUserAction } from './utils/actions/deleteUserAction';
 import { passwordAction } from './utils/actions/passwordAction';
 import { Toaster } from 'react-hot-toast';
 import { designAction } from './utils/actions/designAction';
+import { postsLoader } from './utils/loaders/postsLoader';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +24,7 @@ const router = createBrowserRouter([
     element: <HomeLayout />,
     loader: homeLoader,
     children: [
+      { index: true, element: <Home />, loader: postsLoader },
       {
         path: '/portfolio/new-design',
         element: <NewDesign />,

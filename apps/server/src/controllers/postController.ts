@@ -16,28 +16,46 @@ export const createPost: RequestHandler = async (req: UserRequest, res) => {
 
     const { path } = req.file;
     const response = await cloudinary.v2.uploader.upload(path);
+
+    const coverResponse = await cloudinary.v2.uploader.upload(req.file.path, {
+      transformation: [
+        {
+          width: 574,
+          height: 442,
+          crop: 'fill',
+        },
+      ],
+    });
+
     await fs.unlink(req.file.path);
 
     const post = await prisma.post.create({
       data: {
         title,
         description,
+        authorId: req.user?.id!,
         imageUrl: response.secure_url,
         imagePublicId: response.public_id,
-        authorId: req.user?.id!,
+        imageCoverUrl: coverResponse.secure_url,
+        imageCoverPublicId: coverResponse.public_id,
       },
       select: {
         id: true,
         title: true,
         description: true,
         imageUrl: true,
+        imageCoverUrl: true,
       },
     });
 
     res.status(StatusCodes.CREATED).json({ message: 'Post created', post });
   } catch (error) {
-    if (error instanceof Error) res.json({ message: error.message });
-    else res.json({ message: 'Something went wrong' });
+    if (error instanceof Error)
+      res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+    else
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: error || 'Something went wrong' });
   }
 };
 
@@ -53,8 +71,12 @@ export const updatePost: RequestHandler = async (req: UserRequest, res) => {
 
     res.status(StatusCodes.OK).json({ message: 'Post updated' });
   } catch (error) {
-    if (error instanceof Error) res.json({ message: error.message });
-    else res.json({ message: 'Something went wrong' });
+    if (error instanceof Error)
+      res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+    else
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: 'Something went wrong' });
   }
 };
 
@@ -71,15 +93,23 @@ export const getPosts: RequestHandler = async (req, res) => {
         },
         title: true,
         description: true,
-        imageUrl: true,
+        imageCoverUrl: true,
         id: true,
+        views: true,
+        likes: true,
+        comments: true,
+        createdAt: true,
       },
     });
 
     res.status(StatusCodes.OK).json({ post });
   } catch (error) {
-    if (error instanceof Error) res.json({ message: error.message });
-    else res.json({ message: 'Something went wrong' });
+    if (error instanceof Error)
+      res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+    else
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: 'Something went wrong' });
   }
 };
 
@@ -106,13 +136,21 @@ export const getSinglePost: RequestHandler = async (req, res) => {
         description: true,
         imageUrl: true,
         id: true,
+        views: true,
+        likes: true,
+        comments: true,
+        createdAt: true,
       },
     });
 
     return res.status(StatusCodes.OK).json({ post });
   } catch (error) {
-    if (error instanceof Error) res.json({ message: error.message });
-    else res.json({ message: 'Something went wrong' });
+    if (error instanceof Error)
+      res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+    else
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: 'Something went wrong' });
   }
 };
 
@@ -138,7 +176,11 @@ export const deletePost: RequestHandler = async (req: UserRequest, res) => {
 
     res.status(StatusCodes.OK).json({ message: 'Post deleted' });
   } catch (error) {
-    if (error instanceof Error) res.json({ message: error.message });
-    else res.json({ message: 'Something went wrong' });
+    if (error instanceof Error)
+      res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+    else
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: 'Something went wrong' });
   }
 };

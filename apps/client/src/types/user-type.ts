@@ -1,11 +1,4 @@
-export type Post = {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-  user: User;
-};
+import { Post } from './post-type';
 
 export type User = {
   id: string;

@@ -20,3 +20,6 @@ export { default as DesignInput } from './inputs/DesignInput';
 export { default as DesignCard } from './cards/DesignCard';
 export { default as DeleteAccountBtn } from './buttons/DeleteAccountBtn';
 export { default as DescriptionInput } from './inputs/DescriptionInput';
+export { default as Home } from './sections/home/Home';
+export { default as PostCard } from './cards/PostCard';
+export { default as Posts } from './sections/home/Posts';

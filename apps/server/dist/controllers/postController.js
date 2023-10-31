@@ -50,29 +50,43 @@ const createPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 .json({ message: 'Please upload an image' });
         const { path } = req.file;
         const response = yield cloudinary_1.default.v2.uploader.upload(path);
+        const coverResponse = yield cloudinary_1.default.v2.uploader.upload(req.file.path, {
+            transformation: [
+                {
+                    width: 574,
+                    height: 442,
+                    crop: 'fill',
+                },
+            ],
+        });
         yield fs.unlink(req.file.path);
         const post = yield prisma_1.default.post.create({
             data: {
                 title,
                 description,
+                authorId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id,
                 imageUrl: response.secure_url,
                 imagePublicId: response.public_id,
-                authorId: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id,
+                imageCoverUrl: coverResponse.secure_url,
+                imageCoverPublicId: coverResponse.public_id,
             },
             select: {
                 id: true,
                 title: true,
                 description: true,
                 imageUrl: true,
+                imageCoverUrl: true,
             },
         });
         res.status(http_status_codes_1.StatusCodes.CREATED).json({ message: 'Post created', post });
     }
     catch (error) {
         if (error instanceof Error)
-            res.json({ message: error.message });
+            res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ message: error.message });
         else
-            res.json({ message: 'Something went wrong' });
+            res
+                .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+                .json({ message: error || 'Something went wrong' });
     }
 });
 exports.createPost = createPost;
@@ -88,9 +102,11 @@ const updatePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         if (error instanceof Error)
-            res.json({ message: error.message });
+            res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ message: error.message });
         else
-            res.json({ message: 'Something went wrong' });
+            res
+                .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+                .json({ message: 'Something went wrong' });
     }
 });
 exports.updatePost = updatePost;
@@ -107,17 +123,23 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 },
                 title: true,
                 description: true,
-                imageUrl: true,
+                imageCoverUrl: true,
                 id: true,
+                views: true,
+                likes: true,
+                comments: true,
+                createdAt: true,
             },
         });
         res.status(http_status_codes_1.StatusCodes.OK).json({ post });
     }
     catch (error) {
         if (error instanceof Error)
-            res.json({ message: error.message });
+            res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ message: error.message });
         else
-            res.json({ message: 'Something went wrong' });
+            res
+                .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+                .json({ message: 'Something went wrong' });
     }
 });
 exports.getPosts = getPosts;
@@ -142,15 +164,21 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 description: true,
                 imageUrl: true,
                 id: true,
+                views: true,
+                likes: true,
+                comments: true,
+                createdAt: true,
             },
         });
         return res.status(http_status_codes_1.StatusCodes.OK).json({ post });
     }
     catch (error) {
         if (error instanceof Error)
-            res.json({ message: error.message });
+            res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ message: error.message });
         else
-            res.json({ message: 'Something went wrong' });
+            res
+                .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+                .json({ message: 'Something went wrong' });
     }
 });
 exports.getSinglePost = getSinglePost;
@@ -173,9 +201,11 @@ const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
     catch (error) {
         if (error instanceof Error)
-            res.json({ message: error.message });
+            res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ message: error.message });
         else
-            res.json({ message: 'Something went wrong' });
+            res
+                .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+                .json({ message: 'Something went wrong' });
     }
 });
 exports.deletePost = deletePost;

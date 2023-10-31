@@ -26,23 +26,57 @@ model User {
   updatedAt      DateTime   @updatedAt // Updtate automatically when an update is made
   posts          Post[]
   bookmarks      Bookmark[]
+  Like           Like[]
+  Comment        Comment[]
 }
 
 model Post {
-  id            String     @id @default(cuid())
-  title         String
-  imageUrl      String?
-  imagePublicId String?
-  videoUrl      String?
-  videoPublicId String?
-  description   String?
-  author        User       @relation(fields: [authorId], references: [id])
-  authorId      String
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt // Updtate automatically when an update is made
-  bookmarks     Bookmark[]
+  id                 String     @id @default(cuid())
+  title              String
+  imageUrl           String?
+  imagePublicId      String?
+  imageCoverUrl      String?
+  imageCoverPublicId String?
+  videoUrl           String?
+  videoPublicId      String?
+  description        String?
+  author             User       @relation(fields: [authorId], references: [id])
+  authorId           String
+  views              Int        @default(0)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt // Updtate automatically when an update is made
+  bookmarks          Bookmark[]
+  likes              Like[]
+  comments           Comment[]
 
   @@index([authorId])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt // Updtate automatically when an update is made
+
+  @@index([postId])
+  @@index([userId])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  post      Post     @relation(fields: [postId], references: [id])
+  postId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt // Updtate automatically when an update is made
+
+  @@index([postId])
+  @@index([userId])
 }
 
 model Bookmark {

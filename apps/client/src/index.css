@@ -27,6 +27,10 @@ body {
   min-height: 100vh;
 }
 
+:root {
+  --initialWidth: 700px;
+}
+
 @layer components {
   .auth-container {
     background-color: white;
@@ -107,5 +111,29 @@ body {
     min-height: calc(100vh - 64px);
     display: grid;
     grid-template-rows: max-content 1fr;
+  }
+
+  .posts {
+    /* display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(274px, 383px));
+    gap: 24px; */
+  }
+
+  .post-title {
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+  }
+
+  .post-card {
+    cursor: pointer;
+    flex-grow: 42;
+    width: calc(var(--initialWidth) * 42 / 100);
+  }
+
+  .post-card .image-container div {
+    visibility: hidden;
+  }
+
+  .post-card .image-container:hover div {
+    visibility: visible;
   }
 }
