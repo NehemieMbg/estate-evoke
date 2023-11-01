@@ -1,13 +1,9 @@
-import { HeartIcon, UsersIcon } from '@heroicons/react/24/outline';
-import {
-  HeartIcon as HeartIconSolid,
-  UsersIcon as UsersIconSolid,
-} from '@heroicons/react/24/solid';
+import { HeartIcon, UsersIcon } from '@heroicons/react/24/solid';
 import { Link, useLocation } from 'react-router-dom';
 
 const HomeNavigation = () => {
   const location = useLocation();
-  const currentPath = location.pathname.split('/')[2];
+  const currentPath = location.pathname.split('/')[1];
   console.log(currentPath);
 
   return (
@@ -22,11 +18,7 @@ const HomeNavigation = () => {
       }
 		  `}
       >
-        {!currentPath ? (
-          <HeartIconSolid className="w-5" />
-        ) : (
-          <HeartIcon className="w-5" />
-        )}
+        <HeartIcon className="w-5" />
         <span>For You</span>
       </Link>
 
@@ -42,11 +34,7 @@ const HomeNavigation = () => {
       }
 		  `}
       >
-        {currentPath === 'following' ? (
-          <UsersIconSolid className="w-5" />
-        ) : (
-          <UsersIcon className="w-5" strokeWidth={2} />
-        )}
+        <UsersIcon className="w-5" strokeWidth={2} />
         <span>Following</span>
       </Link>
     </div>

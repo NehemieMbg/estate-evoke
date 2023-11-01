@@ -1,13 +1,19 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { NewDesign, HomeLayout, ProfileLayout, SettingsLayout } from './pages';
+import {
+  NewDesign,
+  HomeLayout,
+  ProfileLayout,
+  SettingsLayout,
+  PostsLayout,
+} from './pages';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import { homeLoader } from './utils/loaders/homeLoader';
 import {
   AccountManagement,
   EditProfile,
-  Home,
   Password,
+  Posts,
   Work,
 } from './components';
 import { managementAction } from './utils/actions/managementAction';
@@ -26,7 +32,14 @@ const router = createBrowserRouter([
     element: <HomeLayout />,
     loader: homeLoader,
     children: [
-      { index: true, element: <Home />, loader: postsLoader },
+      {
+        path: '/',
+        element: <PostsLayout />,
+        children: [
+          { index: true, element: <Posts />, loader: postsLoader },
+          { path: 'following' },
+        ],
+      },
       {
         path: '/portfolio/new-design',
         element: <NewDesign />,
