@@ -18,6 +18,7 @@ import { Toaster } from 'react-hot-toast';
 import { designAction } from './utils/actions/designAction';
 import { postsLoader } from './utils/loaders/postsLoader';
 import { profileLoader } from './utils/loaders/profileLoader';
+import { profileWorkLoader } from './utils/loaders/profileWorkLoader';
 
 const router = createBrowserRouter([
   {
@@ -35,7 +36,10 @@ const router = createBrowserRouter([
         path: '/:username',
         element: <ProfileLayout />,
         loader: profileLoader,
-        children: [{ index: true, element: <Work /> }],
+        children: [
+          { index: true, element: <Work />, loader: profileWorkLoader },
+          { path: 'about' },
+        ],
       },
       {
         path: 'account',

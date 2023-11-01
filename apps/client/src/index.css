@@ -124,7 +124,6 @@ body {
   }
 
   .post-card {
-    cursor: pointer;
     flex-grow: 42;
     width: calc(var(--initialWidth) * 42 / 100);
   }

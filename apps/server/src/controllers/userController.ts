@@ -28,6 +28,8 @@ export const getUser: RequestHandler = async (req, res) => {
                 name: true,
               },
             },
+            imageUrl: true,
+            imageCoverUrl: true,
             title: true,
             views: true,
             comments: true,

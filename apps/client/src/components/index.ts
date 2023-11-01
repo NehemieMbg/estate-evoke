@@ -24,3 +24,6 @@ export { default as Home } from './sections/home/Home';
 export { default as PostCard } from './cards/PostCard';
 export { default as Posts } from './sections/home/Posts';
 export { default as ProfileInfo } from './sections/profile/ProfileInfo';
+export { default as ProfileNavigation } from './sections/profile/ProfileNavigation';
+export { default as ProfilePosts } from './sections/profile/ProfilePosts';
+export { default as ProfilePostCard } from './cards/ProfilePostCard';

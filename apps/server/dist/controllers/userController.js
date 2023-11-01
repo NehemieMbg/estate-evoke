@@ -63,6 +63,8 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                                 name: true,
                             },
                         },
+                        imageUrl: true,
+                        imageCoverUrl: true,
                         title: true,
                         views: true,
                         comments: true,

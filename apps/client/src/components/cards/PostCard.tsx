@@ -9,7 +9,7 @@ type PostCardProps = {
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
     <div className="post-card w-full">
-      <div className="relative image-container bg-neutral-200 rounded-sm overflow-hidden mb-3 w-full">
+      <div className="relative image-container bg-neutral-200 rounded-md overflow-hidden mb-3 w-full">
         <img
           src={post.imageCoverUrl}
           alt={post.title}
@@ -28,35 +28,34 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
         )}
 
         <div className="post-title w-full h-1/2 absolute z-[10] left-0 bottom-0">
-          <h1 className="z-[10] absolute bottom-2.5 left-3 text-white hover:underline cursor-pointer">
+          <h1 className="z-[10] absolute bottom-2.5 left-3 text-white hover:underline cursor-pointer font-roboto font-medium">
             {post.title}
           </h1>
         </div>
       </div>
 
-      <div>
-        <div className="flex items-center justify-between text-xs">
-          <div className="flex gap-2 items-center">
-            <div className="rounded-full bg-neutral-200 overflow-hidden h-5 aspect-square">
-              <img src={post.author.avatar} alt={post.author.name} />
-            </div>
-            <Link to={`/${post.author.username}`} className=" font-bold">
-              {post.author.name}
-            </Link>
+      <div className="flex items-center font-roboto justify-between text-xs">
+        <div className="flex gap-2 items-center w-max">
+          <div className="rounded-full bg-neutral-200 overflow-hidden h-5 aspect-square">
+            <img src={post.author.avatar} alt={post.author.name} />
+          </div>
+          <Link
+            to={`/${post.author.username}`}
+            className="font-exo font-semibold"
+          >
+            {post.author.name}
+          </Link>
+        </div>
+
+        <div className="flex gap-4 text-neutral-500">
+          <div className="flex items-center gap-1">
+            <HeartIcon className="h-3.5" />
+            <span>{post.likes.length || 0}</span>
           </div>
 
-          <div className="flex gap-4">
-            <div className="flex items-center gap-1">
-              <HeartIcon className="h-3.5" />
-              {/* <span>{post.likes || 0}</span> */}
-              <span>{0}</span>
-            </div>
-
-            <div className="flex items-center gap-1">
-              <EyeIcon className="h-3.5" />
-              {/* <span>{post.likes || 0}</span> */}
-              <span>{0}</span>
-            </div>
+          <div className="flex items-center gap-1">
+            <EyeIcon className="h-3.5" />
+            <span>{post.views || 0}</span>
           </div>
         </div>
       </div>

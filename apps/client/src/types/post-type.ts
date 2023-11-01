@@ -7,7 +7,8 @@ export type Post = {
   description: string;
   imageUrl: string;
   imageCoverUrl: string;
-  likes: number;
+  likes: number[];
+  views: number;
   comments: number;
   createdAt: string;
   user: {
