@@ -44,14 +44,13 @@ const SignIn = () => {
       } = await customFetch.post('/auth/sign-in', formData);
       dispatch(setUser(user));
       setErrorMsg('');
-      //? Myabe redirect or close the modal depending on what approach chosen
+      //? Maybe redirect or close the modal depending on what approach chosen
       clearsInputRef(identificationRef, passwordRef);
       dispatch(closeModals());
     } catch (error) {
       if (error instanceof AxiosError) {
         setErrorMsg(error.response?.data.message);
       }
-      console.log(error);
       setIsLoading(false);
     }
     setIsLoading(false);

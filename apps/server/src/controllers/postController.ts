@@ -83,6 +83,7 @@ export const updatePost: RequestHandler = async (req: UserRequest, res) => {
 export const getPosts: RequestHandler = async (req, res) => {
   try {
     const post = await prisma.post.findMany({
+      orderBy: { createdAt: 'desc' },
       select: {
         author: {
           select: {

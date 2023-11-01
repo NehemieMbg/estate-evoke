@@ -55,6 +55,7 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 link: true,
                 email: true,
                 posts: {
+                    orderBy: { createdAt: 'desc' },
                     select: {
                         author: {
                             select: {
@@ -66,6 +67,7 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                         views: true,
                         comments: true,
                         likes: true,
+                        createdAt: true,
                     },
                 },
             },
@@ -120,7 +122,7 @@ const getCurrentUser = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 email: true,
             },
         });
-        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'User found', data: user });
+        res.status(http_status_codes_1.StatusCodes.OK).json({ message: 'User found test', data: user });
     }
     catch (error) {
         if (error instanceof Error)

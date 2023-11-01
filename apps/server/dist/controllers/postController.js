@@ -113,6 +113,7 @@ exports.updatePost = updatePost;
 const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const post = yield prisma_1.default.post.findMany({
+            orderBy: { createdAt: 'desc' },
             select: {
                 author: {
                     select: {

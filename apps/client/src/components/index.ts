@@ -23,3 +23,4 @@ export { default as DescriptionInput } from './inputs/DescriptionInput';
 export { default as Home } from './sections/home/Home';
 export { default as PostCard } from './cards/PostCard';
 export { default as Posts } from './sections/home/Posts';
+export { default as ProfileInfo } from './sections/profile/ProfileInfo';

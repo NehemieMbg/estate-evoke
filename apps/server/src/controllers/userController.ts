@@ -20,6 +20,7 @@ export const getUser: RequestHandler = async (req, res) => {
         link: true,
         email: true,
         posts: {
+          orderBy: { createdAt: 'desc' },
           select: {
             author: {
               select: {
@@ -31,6 +32,7 @@ export const getUser: RequestHandler = async (req, res) => {
             views: true,
             comments: true,
             likes: true,
+            createdAt: true,
           },
         },
       },
@@ -83,7 +85,7 @@ export const getCurrentUser: RequestHandler = async (req: UserRequest, res) => {
       },
     });
 
-    res.status(StatusCodes.OK).json({ message: 'User found', data: user });
+    res.status(StatusCodes.OK).json({ message: 'User found test', data: user });
   } catch (error) {
     if (error instanceof Error) res.json({ message: error.message });
     else res.json({ message: 'Something went wrong' });

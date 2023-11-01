@@ -8,6 +8,7 @@ export default {
       },
       maxWidth: {
         'screen-wide': '1728px',
+        'screen-normal': '1440px',
       },
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],

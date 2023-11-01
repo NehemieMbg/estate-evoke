@@ -22,24 +22,25 @@ const router = Router();
 
 // Get all users & create a user
 router.route('/').get(getAllUsers);
-router.route('/:username').get(getUser);
-// Get a user, update a user, delete a user
+
 router
   .route('/user')
-  .get(getCurrentUser)
-  .put(validateUpdateUser, updateUser)
-  .delete(deleteUser);
+  .get(authMiddleware, getCurrentUser)
+  .put(authMiddleware, validateUpdateUser, updateUser)
+  .delete(authMiddleware, deleteUser);
+
+router.route('/user/:username').get(getUser);
 
 router
   .route('/user/avatar')
-  .patch(upload.single('avatar'), updateProfilePicture)
-  .delete(deleteProfilePicture);
+  .patch(authMiddleware, upload.single('avatar'), updateProfilePicture)
+  .delete(authMiddleware, deleteProfilePicture);
 
 router
   .route('/user/credentials')
-  .patch(validateCredentials, updateUserCredentials);
+  .patch(authMiddleware, validateCredentials, updateUserCredentials);
 router
   .route('/user/credentials/password')
-  .patch(validateUpdatePassword, updateUserPassword);
+  .patch(authMiddleware, validateUpdatePassword, updateUserPassword);
 
 export default router;

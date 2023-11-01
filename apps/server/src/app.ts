@@ -3,7 +3,6 @@ import { StatusCodes } from 'http-status-codes';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import cors from 'cors';
-// import { authMiddleware } from './middlewares/authMiddleware';
 import cookieParser from 'cookie-parser';
 import cloudinary from 'cloudinary';
 import path from 'path';
@@ -35,7 +34,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.static(path.resolve(__dirname, './public')));
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/users', authMiddleware, userRouter);
+app.use('/api/v1/users', userRouter);
 app.use('/api/v1/posts', postRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
