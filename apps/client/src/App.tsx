@@ -5,6 +5,7 @@ import {
   ProfileLayout,
   SettingsLayout,
   PostsLayout,
+  Post,
 } from './pages';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
           { index: true, element: <Posts />, loader: postsLoader },
           { path: 'following' },
         ],
+      },
+      {
+        path: 'gallery/:postId/:postName',
+        element: <Post />,
       },
       {
         path: '/portfolio/new-design',
@@ -81,6 +86,7 @@ function App() {
   return (
     <Provider store={store}>
       <RouterProvider router={router} />
+
       <Toaster position="bottom-right" />
     </Provider>
   );

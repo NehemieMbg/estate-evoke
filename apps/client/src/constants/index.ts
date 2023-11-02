@@ -1,3 +1,5 @@
+export const navbar = [{ label: 'For You', path: '/' }];
+
 export const auth = {
   signIn: {
     label: 'Sign in',

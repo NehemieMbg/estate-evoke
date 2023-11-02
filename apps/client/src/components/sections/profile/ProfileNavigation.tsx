@@ -1,17 +1,12 @@
 import {
   BriefcaseIcon,
   InformationCircleIcon,
-} from '@heroicons/react/24/outline';
-import {
-  BriefcaseIcon as BriefcaseIconSolid,
-  InformationCircleIcon as InformationCircleIconSolid,
 } from '@heroicons/react/24/solid';
 import { Link, useLocation } from 'react-router-dom';
 
 const ProfileNavigation = () => {
   const location = useLocation();
   const currentPath = location.pathname.split('/')[2];
-  console.log(currentPath);
 
   return (
     <div className=" bg-white border-b border-b-neutral-150 font-exo  mb-10 max-lg:mb-8  flex items-center gap-6">
@@ -25,11 +20,8 @@ const ProfileNavigation = () => {
     }
 		`}
       >
-        {!currentPath ? (
-          <BriefcaseIconSolid className="w-5" />
-        ) : (
-          <BriefcaseIcon className="w-5" />
-        )}
+        <BriefcaseIcon className="w-5" />
+
         <span>Work</span>
       </Link>
 
@@ -45,11 +37,8 @@ const ProfileNavigation = () => {
     }
 		`}
       >
-        {currentPath === 'about' ? (
-          <InformationCircleIconSolid className="w-5" />
-        ) : (
-          <InformationCircleIcon className="w-5" strokeWidth={2} />
-        )}
+        <InformationCircleIcon className="w-5" />
+
         <span>About</span>
       </Link>
     </div>

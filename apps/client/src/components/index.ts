@@ -27,3 +27,4 @@ export { default as ProfileInfo } from './sections/profile/ProfileInfo';
 export { default as ProfileNavigation } from './sections/profile/ProfileNavigation';
 export { default as ProfilePosts } from './sections/profile/ProfilePosts';
 export { default as ProfilePostCard } from './cards/ProfilePostCard';
+export { default as PostModal } from './modals/PostModal';

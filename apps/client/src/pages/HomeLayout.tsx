@@ -8,6 +8,7 @@ const HomeLayout = () => {
       <main className="w-screen min-h-screen">
         <Navbar />
         <Auth />
+
         <Outlet />
       </main>
     </div>

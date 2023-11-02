@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   openLoginModal,
   openRegisterModal,
@@ -9,15 +9,35 @@ import { NavigationCard } from '..';
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const currentPath = location.pathname.split('/')[1];
+
   const user = useSelector(
     (state: { auth: { user: User } }) => state.auth.user
   );
 
   return (
     <nav className="sticky z-[99] top-0 py-2.5 px-6 border-b-2 bg-white shadow-sm border-b-neutral-100 border-opacity-0 flex items-center justify-between">
-      <Link to={'/'} className="font-exo text-lg">
-        evoke-estate
-      </Link>
+      <div className="flex gap-6 items-center">
+        <Link to={'/'} className="font-exo text-lg">
+          evoke-estate
+        </Link>
+
+        <Link
+          to={'/'}
+          className={`relative font-exo text-[15px]
+          ${
+            (!currentPath || currentPath === 'following') &&
+            'text-black font-medium'
+          }
+        `}
+        >
+          <span>For You</span>
+          {(!currentPath || currentPath === 'following') && (
+            <div className="absolute top-7 left-1/2 w-1 h-1 rounded-full bg-black"></div>
+          )}
+        </Link>
+      </div>
 
       {/* <Search /> */}
 

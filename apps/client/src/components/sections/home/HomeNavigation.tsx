@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 const HomeNavigation = () => {
   const location = useLocation();
   const currentPath = location.pathname.split('/')[1];
-  console.log(currentPath);
 
   return (
     <div className="border-b border-b-neutral-150 font-exo  mb-10 max-lg:mb-8  flex items-center gap-6">

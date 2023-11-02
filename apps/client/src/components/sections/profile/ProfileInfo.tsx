@@ -1,13 +1,18 @@
 import { ChevronRightIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { User } from '../../../types/user-type';
 import { Link } from 'react-router-dom';
-import { PlusIcon } from '@heroicons/react/20/solid';
+import { PencilIcon, PlusIcon } from '@heroicons/react/20/solid';
+import { useSelector } from 'react-redux';
 
 type ProfileInfoProps = {
   user: User;
 };
 
 const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
+  const { username } = useSelector(
+    (state: { auth: { user: User } }) => state.auth.user
+  );
+
   return (
     <div className="w-full max-w-screen-normal mx-auto flex gap-6 max-[586px]:flex-col">
       <div className="w-28 h-28 aspect-square rounded-full bg-neutral-200 overflow-hidden">
@@ -49,10 +54,20 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
           </a>
         )}
 
-        <button className="bg-blue-500 hover:bg-opacity-90 transition-colors duration-200 rounded-full py-1.5 px-5 text-sm mt-2 text-white font-exo w-max flex items-center gap-1">
-          <PlusIcon className="h-5 text-white" />
-          <span>Follow</span>
-        </button>
+        {username === user.username ? (
+          <Link
+            to={'/account/edit-profile'}
+            className="bg-blue-600 hover:bg-opacity-90 transition-colors duration-200 rounded-full py-1.5 px-5 text-sm mt-2 text-white font-exo w-max flex items-center gap-1"
+          >
+            <PencilIcon className="h-4 text-white" />
+            <span>Edit your profile</span>
+          </Link>
+        ) : (
+          <button className="bg-blue-600 hover:bg-opacity-90 transition-colors duration-200 rounded-full py-1.5 px-5 text-sm mt-2 text-white font-exo w-max flex items-center gap-1">
+            <PlusIcon className="h-5 text-white" />
+            <span>Follow</span>
+          </button>
+        )}
       </div>
     </div>
   );
