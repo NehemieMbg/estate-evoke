@@ -159,6 +159,10 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
             .json({ message: 'Post not found' });
     try {
+        yield prisma_1.default.post.update({
+            where: { id: postId },
+            data: { views: { increment: 1 } },
+        });
         const post = yield prisma_1.default.post.findUnique({
             where: { id: postId },
             select: {

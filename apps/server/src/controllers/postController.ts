@@ -130,6 +130,11 @@ export const getSinglePost: RequestHandler = async (req, res) => {
       .json({ message: 'Post not found' });
 
   try {
+    await prisma.post.update({
+      where: { id: postId },
+      data: { views: { increment: 1 } },
+    });
+
     const post = await prisma.post.findUnique({
       where: { id: postId },
 

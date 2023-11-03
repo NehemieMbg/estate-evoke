@@ -35,7 +35,7 @@ const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
             onMouseLeave={handleMouseLeave}
             className="hover:underline cursor-pointer"
           >
-            {post.author.name}
+            by {post.author.name}
           </Link>
 
           <div>&bull;</div>
