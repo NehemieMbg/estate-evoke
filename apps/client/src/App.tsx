@@ -26,6 +26,7 @@ import { designAction } from './utils/actions/designAction';
 import { postsLoader } from './utils/loaders/postsLoader';
 import { profileLoader } from './utils/loaders/profileLoader';
 import { profileWorkLoader } from './utils/loaders/profileWorkLoader';
+import { postLoader } from './utils/loaders/postLoader';
 
 const router = createBrowserRouter([
   {
@@ -42,8 +43,9 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: 'gallery/:postId/:postName',
+        path: '/gallery/:postId/:postName',
         element: <Post />,
+        loader: postLoader,
       },
       {
         path: '/portfolio/new-design',
