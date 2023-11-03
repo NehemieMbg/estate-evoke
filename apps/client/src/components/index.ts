@@ -29,3 +29,4 @@ export { default as ProfilePosts } from './sections/profile/ProfilePosts';
 export { default as ProfilePostCard } from './cards/ProfilePostCard';
 export { default as PostHeader } from './sections/post/PostHeader';
 export { default as UserCard } from './cards/UserCard';
+export { default as PostReaction } from './sections/post/PostReaction';

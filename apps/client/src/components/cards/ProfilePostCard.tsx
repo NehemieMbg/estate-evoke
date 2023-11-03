@@ -1,15 +1,25 @@
 import { EyeIcon, HeartIcon } from '@heroicons/react/20/solid';
 import { Post } from '../../types/post-type';
-// import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type ProfilePostCardProps = {
   post: Post;
 };
 
 const ProfilePostCard: React.FC<ProfilePostCardProps> = ({ post }) => {
+  const navigate = useNavigate();
+  const postName = post.title.split(' ').join('-');
+
+  const handleTransitionToPost = () => {
+    navigate(`/gallery/${post.id}/${postName}`);
+  };
+
   return (
     <div className="post-card w-full">
-      <div className="relative image-container bg-neutral-200 rounded-md overflow-hidden w-full">
+      <div
+        onClick={handleTransitionToPost}
+        className="cursor-pointer relative image-container bg-neutral-200 rounded-md overflow-hidden w-full"
+      >
         <img
           src={post.imageCoverUrl}
           alt={post.title}

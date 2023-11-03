@@ -16,7 +16,7 @@ const UserCard: React.FC<UserCardProps> = ({
   return (
     <div
       onMouseLeave={() => setCardIsOpen(false)}
-      className={`absolute z-[10] mt-2.5 font-roboto bg-white shadow-md shadow-neutral-200 border border-neutral-100 p-3.5 rounded-md max-w-[400px] w-full
+      className={`absolute z-[10] mt-2.5 font-roboto bg-white shadow-md border border-neutral-200 p-3.5 rounded-md max-w-[400px] w-full
 	  ${cardIsOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
 	`}
     >

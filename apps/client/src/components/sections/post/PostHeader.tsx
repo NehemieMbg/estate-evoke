@@ -1,34 +1,15 @@
 import { Link } from 'react-router-dom';
 import { Post } from '../../../types/post-type';
 import { UserCard } from '../..';
-import { useState } from 'react';
+import useShowCard from '../../../hooks/useShowCard';
 
 type PostHeaderProps = {
   post: Post;
 };
 
 const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
-  const [cardIsOpen, setCardIsOpen] = useState(false);
-  const [canClose, setCanClose] = useState(false);
-
-  let hoverTimer: NodeJS.Timeout;
-
-  const handleMouseEnter = () => {
-    hoverTimer = setTimeout(() => {
-      setCardIsOpen(true);
-      setCanClose(false);
-      setTimeout(() => {
-        setCanClose(true);
-      }, 1000);
-    }, 1000);
-  };
-
-  const handleMouseLeave = () => {
-    clearTimeout(hoverTimer);
-    if (canClose) {
-      setCardIsOpen(false);
-    }
-  };
+  const { cardIsOpen, setCardIsOpen, handleMouseEnter, handleMouseLeave } =
+    useShowCard();
 
   return (
     <div className="flex items-center gap-2.5 py-6">

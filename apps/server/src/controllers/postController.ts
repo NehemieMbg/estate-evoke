@@ -152,6 +152,7 @@ export const getSinglePost: RequestHandler = async (req, res) => {
         title: true,
         description: true,
         imageCoverUrl: true,
+        imageUrl: true,
         id: true,
         views: true,
         likes: true,

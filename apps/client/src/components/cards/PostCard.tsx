@@ -1,6 +1,8 @@
 import { EyeIcon, HeartIcon } from '@heroicons/react/20/solid';
 import { Post } from '../../types/post-type';
 import { Link, useNavigate } from 'react-router-dom';
+import { UserCard } from '..';
+import useShowCard from '../../hooks/useShowCard';
 
 type PostCardProps = {
   post: Post;
@@ -13,6 +15,9 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const handleTransitionToPost = () => {
     navigate(`/gallery/${post.id}/${postName}`);
   };
+
+  const { cardIsOpen, setCardIsOpen, handleMouseEnter, handleMouseLeave } =
+    useShowCard();
 
   return (
     <div className="post-card w-full">
@@ -51,7 +56,9 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           </div>
           <Link
             to={`/${post.author.username}`}
-            className="font-exo font-semibold"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className="font-medium hover:underline"
           >
             {post.author.name}
           </Link>
@@ -69,6 +76,11 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           </div>
         </div>
       </div>
+      <UserCard
+        user={post.author}
+        cardIsOpen={cardIsOpen}
+        setCardIsOpen={setCardIsOpen}
+      />
     </div>
   );
 };

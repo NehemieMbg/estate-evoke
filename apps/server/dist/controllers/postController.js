@@ -180,6 +180,7 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 title: true,
                 description: true,
                 imageCoverUrl: true,
+                imageUrl: true,
                 id: true,
                 views: true,
                 likes: true,
