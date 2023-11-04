@@ -42,6 +42,7 @@ const encryptedData_1 = require("../utils/encryptedData");
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const fs = __importStar(require("fs/promises"));
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const user = yield prisma_1.default.user.findUnique({
             where: { username: req.params.username },
@@ -54,6 +55,28 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 bio: true,
                 link: true,
                 email: true,
+                followers: {
+                    select: {
+                        follower: {
+                            select: {
+                                id: true,
+                                username: true,
+                                name: true,
+                            },
+                        },
+                    },
+                },
+                following: {
+                    select: {
+                        following: {
+                            select: {
+                                id: true,
+                                username: true,
+                                name: true,
+                            },
+                        },
+                    },
+                },
                 posts: {
                     orderBy: { createdAt: 'desc' },
                     select: {
@@ -75,9 +98,19 @@ const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 },
             },
         });
+        let isFollowing = false;
+        // check if the user is following the user
+        // as any because error when follower.id when follower.follower.id is not correct but say it as correct type
+        for (const follower of user === null || user === void 0 ? void 0 : user.followers) {
+            if (follower.id === ((_a = req.user) === null || _a === void 0 ? void 0 : _a.id)) {
+                isFollowing = true;
+                break;
+            }
+        }
+        const resUser = Object.assign(Object.assign({}, user), { isFollowing });
         return res
             .status(http_status_codes_1.StatusCodes.OK)
-            .json({ message: 'User found', data: user });
+            .json({ message: 'User found', data: resUser });
     }
     catch (error) {
         if (error instanceof Error)
@@ -228,17 +261,17 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.deleteUser = deleteUser;
 const updateProfilePicture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _b, _c;
     try {
         const user = yield prisma_1.default.user.findUnique({
-            where: { id: (_a = req.user) === null || _a === void 0 ? void 0 : _a.id },
+            where: { id: (_b = req.user) === null || _b === void 0 ? void 0 : _b.id },
         });
         if (req.file) {
             const { path } = req.file;
             const response = yield cloudinary_1.default.v2.uploader.upload(path);
             yield fs.unlink(req.file.path);
             const updatedUser = yield prisma_1.default.user.update({
-                where: { id: (_b = req.user) === null || _b === void 0 ? void 0 : _b.id },
+                where: { id: (_c = req.user) === null || _c === void 0 ? void 0 : _c.id },
                 data: {
                     avatar: response.secure_url,
                     avatarPublicId: response.public_id,
@@ -260,16 +293,16 @@ const updateProfilePicture = (req, res) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.updateProfilePicture = updateProfilePicture;
 const deleteProfilePicture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c, _d;
+    var _d, _e;
     try {
         const user = yield prisma_1.default.user.findUnique({
-            where: { id: (_c = req.user) === null || _c === void 0 ? void 0 : _c.id },
+            where: { id: (_d = req.user) === null || _d === void 0 ? void 0 : _d.id },
         });
         if (user === null || user === void 0 ? void 0 : user.avatarPublicId) {
             yield cloudinary_1.default.v2.uploader.destroy(user.avatarPublicId);
         }
         yield prisma_1.default.user.update({
-            where: { id: (_d = req.user) === null || _d === void 0 ? void 0 : _d.id },
+            where: { id: (_e = req.user) === null || _e === void 0 ? void 0 : _e.id },
             data: {
                 avatar: null,
                 avatarPublicId: null,

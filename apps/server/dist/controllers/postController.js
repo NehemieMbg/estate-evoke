@@ -163,15 +163,38 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             where: { id: postId },
             data: { views: { increment: 1 } },
         });
-        const post = yield prisma_1.default.post.findUnique({
+        let post = yield prisma_1.default.post.findUnique({
             where: { id: postId },
             select: {
                 author: {
                     select: {
+                        id: true,
                         username: true,
                         avatar: true,
                         name: true,
                         location: true,
+                        followers: {
+                            select: {
+                                follower: {
+                                    select: {
+                                        id: true,
+                                        username: true,
+                                        name: true,
+                                    },
+                                },
+                            },
+                        },
+                        following: {
+                            select: {
+                                following: {
+                                    select: {
+                                        id: true,
+                                        username: true,
+                                        name: true,
+                                    },
+                                },
+                            },
+                        },
                         posts: {
                             take: 3,
                             orderBy: { createdAt: 'desc' },
@@ -192,6 +215,19 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 createdAt: true,
             },
         });
+        try {
+            const isFollowing = yield prisma_1.default.follow.findUnique({
+                where: {
+                    followerId_followingId: {
+                        followerId: req.user.id,
+                        followingId: post === null || post === void 0 ? void 0 : post.author.id,
+                    },
+                },
+            });
+            console.log(isFollowing);
+        }
+        catch (error) { }
+        // post?.author.isFOllowing = !!isFollowing;
         return res.status(http_status_codes_1.StatusCodes.OK).json({ post });
     }
     catch (error) {

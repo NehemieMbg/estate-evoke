@@ -2,11 +2,11 @@ import { RequestHandler } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import prisma from '../utils/prisma';
 import { hashPassword } from '../utils/encryptedData';
-import { User, UserRequest } from '../types/types';
+import { Follower, User, UserRequest } from '../types/types';
 import cloudinary from 'cloudinary';
 import * as fs from 'fs/promises';
 
-export const getUser: RequestHandler = async (req, res) => {
+export const getUser: RequestHandler = async (req: UserRequest, res) => {
   try {
     const user = await prisma.user.findUnique({
       where: { username: req.params.username },
@@ -19,6 +19,28 @@ export const getUser: RequestHandler = async (req, res) => {
         bio: true,
         link: true,
         email: true,
+        followers: {
+          select: {
+            follower: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+              },
+            },
+          },
+        },
+        following: {
+          select: {
+            following: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+              },
+            },
+          },
+        },
         posts: {
           orderBy: { createdAt: 'desc' },
           select: {
@@ -41,9 +63,25 @@ export const getUser: RequestHandler = async (req, res) => {
       },
     });
 
+    let isFollowing = false;
+    // check if the user is following the user
+
+    // as any because error when follower.id when follower.follower.id is not correct but say it as correct type
+    for (const follower of user?.followers! as any) {
+      if (follower.id === req.user?.id) {
+        isFollowing = true;
+        break;
+      }
+    }
+
+    const resUser = {
+      ...user,
+      isFollowing,
+    };
+
     return res
       .status(StatusCodes.OK)
-      .json({ message: 'User found', data: user });
+      .json({ message: 'User found', data: resUser });
   } catch (error) {
     if (error instanceof Error) return res.json({ message: error.message });
     else return res.json({ message: 'Something went wrong' });

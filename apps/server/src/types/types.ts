@@ -12,3 +12,7 @@ export type User = {
 };
 
 export type UserRequest = Request & { user?: User };
+
+export type Follower = {
+  id: string;
+};

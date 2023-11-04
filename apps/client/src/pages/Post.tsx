@@ -45,15 +45,10 @@ const Post = () => {
             `}
           />
 
-          <div>
-            <div></div>
-            <div></div>
-          </div>
-
           {!isImageZoomedIn && (
             <button
               onClick={() => setIsImageFullScreen(false)}
-              className="fixed top-5 right-5 bg-neutral-700 p-2 rounded-full z-[10]"
+              className="fixed top-5 right-5 bg-neutral-800 p-2 rounded-full z-[10] hover:bg-neutral-700 duration-200"
             >
               <XMarkIcon className="w-4 h-4 text-white" strokeWidth={2.8} />
             </button>

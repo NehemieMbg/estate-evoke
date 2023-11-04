@@ -122,7 +122,7 @@ export const getPosts: RequestHandler = async (req, res) => {
   }
 };
 
-export const getSinglePost: RequestHandler = async (req, res) => {
+export const getSinglePost: RequestHandler = async (req: UserRequest, res) => {
   const { postId } = req.params;
   if (!postId)
     return res
@@ -135,16 +135,39 @@ export const getSinglePost: RequestHandler = async (req, res) => {
       data: { views: { increment: 1 } },
     });
 
-    const post = await prisma.post.findUnique({
+    let post = await prisma.post.findUnique({
       where: { id: postId },
 
       select: {
         author: {
           select: {
+            id: true,
             username: true,
             avatar: true,
             name: true,
             location: true,
+            followers: {
+              select: {
+                follower: {
+                  select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+            following: {
+              select: {
+                following: {
+                  select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                  },
+                },
+              },
+            },
             posts: {
               take: 3,
               orderBy: { createdAt: 'desc' },
@@ -165,6 +188,20 @@ export const getSinglePost: RequestHandler = async (req, res) => {
         createdAt: true,
       },
     });
+
+    try {
+      const isFollowing = await prisma.follow.findUnique({
+        where: {
+          followerId_followingId: {
+            followerId: req.user!.id,
+            followingId: post?.author!.id as string,
+          },
+        },
+      });
+      console.log(isFollowing);
+    } catch (error) {}
+
+    // post?.author.isFOllowing = !!isFollowing;
 
     return res.status(StatusCodes.OK).json({ post });
   } catch (error) {

@@ -3,6 +3,7 @@ import { User } from '../../../types/user-type';
 import { Link } from 'react-router-dom';
 import { PencilIcon, PlusIcon } from '@heroicons/react/20/solid';
 import { useSelector } from 'react-redux';
+import useFollow from '../../../hooks/useFollow';
 
 type ProfileInfoProps = {
   user: User;
@@ -12,6 +13,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
   const { username } = useSelector(
     (state: { auth: { user: User } }) => state.auth.user
   );
+
+  const [handleFollowing, handleUnfollowing] = useFollow();
 
   return (
     <div className="w-full max-w-screen-normal mx-auto flex gap-6 max-[586px]:flex-col">
@@ -63,10 +66,24 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
             <span>Edit your profile</span>
           </Link>
         ) : (
-          <button className="bg-blue-600 hover:bg-opacity-90 transition-colors duration-200 rounded-full py-1.5 px-5 text-sm mt-2 text-white font-exo w-max flex items-center gap-1">
-            <PlusIcon className="h-5 text-white" />
-            <span>Follow</span>
-          </button>
+          <>
+            {user.isFollowing ? (
+              <button
+                onClick={() => handleUnfollowing(user.id)}
+                className="bg-white hover:bg-red-600 hover:text-white hover:border-red-600 transition-colors duration-200 rounded-full py-1.5 px-5 text-sm mt-2 text-black font-medium border border-neutral-300 font-exo w-max flex items-center gap-1"
+              >
+                <span>Unfollow</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => handleFollowing(user.id)}
+                className="bg-blue-600 hover:bg-opacity-90 transition-colors duration-200 rounded-full py-1.5 px-5  mt-2 text-white text-sm font-exo font-medium w-max flex items-center gap-1"
+              >
+                <PlusIcon className="h-5 text-white" />
+                <span>Follow</span>
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

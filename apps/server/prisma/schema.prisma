@@ -28,6 +28,21 @@ model User {
   bookmarks      Bookmark[]
   Like           Like[]
   Comment        Comment[]
+  following      Follow[]   @relation("Follower")
+  followers      Follow[]   @relation("Following")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  follower    User     @relation("Follower", fields: [followerId], references: [id])
+  followerId  String
+  following   User     @relation("Following", fields: [followingId], references: [id])
+  followingId String
+  createdAt   DateTime @default(now())
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
 }
 
 model Post {
@@ -91,39 +106,3 @@ model Bookmark {
   @@index([postId])
   @@index([userId])
 }
-
-// model Customer {
-//   id               String            @id @default(cuid())
-//   name             String
-//   email            String
-//   inovices         Inovice[]
-//   customerContacts CustomerContact[]
-//   createdAt        DateTime          @default(now())
-//   updatedAt        DateTime          @updatedAt // Updtate automatically when an update is made
-// }
-
-// model Inovice {
-//   id         String   @id @default(cuid())
-//   number     Int
-//   amount     Int // cents instead of fractional dollar
-//   customer   Customer @relation(fields: [customerId], references: [id])
-//   customerId String
-//   createdAt  DateTime @default(now())
-//   updatedAt  DateTime @updatedAt // Updtate automatically when an update is made
-
-//   @@index([customerId])
-// }
-
-// model CustomerContact {
-//   id         String   @id @default(cuid())
-//   firstName  String
-//   lastName   String
-//   phone      String
-//   customer   Customer @relation(fields: [customerId], references: [id])
-//   customerId String
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt // Updtate automatically when an update is made
-
-//   @@index([customerId])
-// }
