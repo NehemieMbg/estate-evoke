@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePost = exports.getSinglePost = exports.getPosts = exports.updatePost = exports.createPost = void 0;
+exports.deletePost = exports.getSinglePost = exports.getFollowingPosts = exports.getPosts = exports.updatePost = exports.createPost = void 0;
 const prisma_1 = __importDefault(require("../utils/prisma"));
 const cloudinary_1 = __importDefault(require("cloudinary"));
 const fs = __importStar(require("fs/promises"));
@@ -152,6 +152,58 @@ const getPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getPosts = getPosts;
+const getFollowingPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    try {
+        const post = yield prisma_1.default.post.findMany({
+            where: {
+                author: {
+                    followers: {
+                        some: {
+                            followerId: (_b = req.user) === null || _b === void 0 ? void 0 : _b.id,
+                        },
+                    },
+                },
+            },
+            orderBy: { createdAt: 'desc' },
+            select: {
+                author: {
+                    select: {
+                        username: true,
+                        avatar: true,
+                        name: true,
+                        location: true,
+                        posts: {
+                            take: 3,
+                            orderBy: { createdAt: 'desc' },
+                            select: {
+                                imageCoverUrl: true,
+                            },
+                        },
+                    },
+                },
+                title: true,
+                description: true,
+                imageCoverUrl: true,
+                id: true,
+                views: true,
+                likes: true,
+                comments: true,
+                createdAt: true,
+            },
+        });
+        res.status(http_status_codes_1.StatusCodes.OK).json({ post });
+    }
+    catch (error) {
+        if (error instanceof Error)
+            res.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ message: error.message });
+        else
+            res
+                .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
+                .json({ message: 'Something went wrong' });
+    }
+});
+exports.getFollowingPosts = getFollowingPosts;
 const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { postId } = req.params;
     if (!postId)
@@ -215,19 +267,6 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
                 createdAt: true,
             },
         });
-        try {
-            const isFollowing = yield prisma_1.default.follow.findUnique({
-                where: {
-                    followerId_followingId: {
-                        followerId: req.user.id,
-                        followingId: post === null || post === void 0 ? void 0 : post.author.id,
-                    },
-                },
-            });
-            console.log(isFollowing);
-        }
-        catch (error) { }
-        // post?.author.isFOllowing = !!isFollowing;
         return res.status(http_status_codes_1.StatusCodes.OK).json({ post });
     }
     catch (error) {
@@ -241,7 +280,7 @@ const getSinglePost = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 });
 exports.getSinglePost = getSinglePost;
 const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _c;
     const { postId } = req.params;
     try {
         const post = yield prisma_1.default.post.findUnique({ where: { id: postId } });
@@ -249,7 +288,7 @@ const deletePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             return res
                 .status(http_status_codes_1.StatusCodes.BAD_REQUEST)
                 .json({ message: 'Post not found' });
-        if (post.authorId !== ((_b = req.user) === null || _b === void 0 ? void 0 : _b.id))
+        if (post.authorId !== ((_c = req.user) === null || _c === void 0 ? void 0 : _c.id))
             return res
                 .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
                 .json({ message: 'Not authorized' });

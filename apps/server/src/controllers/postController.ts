@@ -122,6 +122,60 @@ export const getPosts: RequestHandler = async (req, res) => {
   }
 };
 
+export const getFollowingPosts: RequestHandler = async (
+  req: UserRequest,
+  res
+) => {
+  try {
+    const post = await prisma.post.findMany({
+      where: {
+        author: {
+          followers: {
+            some: {
+              followerId: req.user?.id,
+            },
+          },
+        },
+      },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        author: {
+          select: {
+            username: true,
+            avatar: true,
+            name: true,
+            location: true,
+            posts: {
+              take: 3,
+              orderBy: { createdAt: 'desc' },
+              select: {
+                imageCoverUrl: true,
+              },
+            },
+          },
+        },
+        title: true,
+        description: true,
+        imageCoverUrl: true,
+        id: true,
+        views: true,
+        likes: true,
+        comments: true,
+        createdAt: true,
+      },
+    });
+
+    res.status(StatusCodes.OK).json({ post });
+  } catch (error) {
+    if (error instanceof Error)
+      res.status(StatusCodes.BAD_REQUEST).json({ message: error.message });
+    else
+      res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: 'Something went wrong' });
+  }
+};
+
 export const getSinglePost: RequestHandler = async (req: UserRequest, res) => {
   const { postId } = req.params;
   if (!postId)
@@ -188,20 +242,6 @@ export const getSinglePost: RequestHandler = async (req: UserRequest, res) => {
         createdAt: true,
       },
     });
-
-    try {
-      const isFollowing = await prisma.follow.findUnique({
-        where: {
-          followerId_followingId: {
-            followerId: req.user!.id,
-            followingId: post?.author!.id as string,
-          },
-        },
-      });
-      console.log(isFollowing);
-    } catch (error) {}
-
-    // post?.author.isFOllowing = !!isFollowing;
 
     return res.status(StatusCodes.OK).json({ post });
   } catch (error) {

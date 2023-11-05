@@ -9,6 +9,13 @@ export const postLoader = async ({ params }: ActionFunctionArgs) => {
       data: { post: post },
     } = await customFetch.get(`/posts/${postId}`);
 
+    // Check if user is following the author of the post
+    const {
+      data: { isFollowing },
+    } = await customFetch.get(`/follows/${post.author.id}`);
+
+    post.author.isFollowing = isFollowing;
+
     return post;
   } catch (error) {
     if (error instanceof AxiosError) return error.response?.data.message;

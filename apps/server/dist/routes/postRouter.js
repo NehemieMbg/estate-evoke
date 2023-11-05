@@ -13,6 +13,7 @@ router
     .route('/')
     .get(postController_1.getPosts)
     .post(authMiddleware_1.authMiddleware, multerMiddleware_1.default.single('image'), validationMiddleware_1.validatePost, postController_1.createPost);
+router.route('/following').get(authMiddleware_1.authMiddleware, postController_1.getFollowingPosts);
 router
     .route('/:postId')
     .get(postController_1.getSinglePost)

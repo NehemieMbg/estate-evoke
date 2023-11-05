@@ -3,6 +3,7 @@ import { authMiddleware } from '../middlewares/authMiddleware';
 import {
   createPost,
   getPosts,
+  getFollowingPosts,
   getSinglePost,
   updatePost,
 } from '../controllers/postController';
@@ -18,6 +19,9 @@ router
   .route('/')
   .get(getPosts)
   .post(authMiddleware, upload.single('image'), validatePost, createPost);
+
+router.route('/following').get(authMiddleware, getFollowingPosts);
+
 router
   .route('/:postId')
   .get(getSinglePost)

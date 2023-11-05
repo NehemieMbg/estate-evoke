@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { User } from '../../types/user-type';
-import { PlusIcon } from '@heroicons/react/20/solid';
+// import { PlusIcon } from '@heroicons/react/20/solid';
+// import { useSelector } from 'react-redux';
 
 type UserCardProps = {
   user: User;
@@ -13,6 +14,10 @@ const UserCard: React.FC<UserCardProps> = ({
   cardIsOpen,
   setCardIsOpen,
 }) => {
+  // const currentUser = useSelector(
+  //   (state: { auth: { user: User } }) => state.auth.user
+  // );
+
   return (
     <div
       onMouseLeave={() => setCardIsOpen(false)}
@@ -45,10 +50,21 @@ const UserCard: React.FC<UserCardProps> = ({
           </div>
         </div>
 
-        <button className="self-start bg-blue-600 hover:bg-opacity-90 transition-colors duration-200 rounded-full  px-3.5 py-1.5 text-xs text-white font-exo w-max flex items-center gap-1">
-          <PlusIcon className="h-3 text-white" />
-          <span>Follow</span>
-        </button>
+        {/* {currentUser.username !== user.username && (
+          <>
+            {  (
+              <button className="self-start bg-blue-600 hover:bg-opacity-90 transition-colors duration-200 rounded-full  px-3.5 py-1.5 text-xs text-white font-exo w-max flex items-center gap-1">
+                <PlusIcon className="h-3 text-white" />
+                <span>Unfollow</span>
+              </button>
+            ) : (
+              <button className="self-start bg-blue-600 hover:bg-opacity-90 transition-colors duration-200 rounded-full  px-3.5 py-1.5 text-xs text-white font-exo w-max flex items-center gap-1">
+                <PlusIcon className="h-3 text-white" />
+                <span>Follow</span>
+              </button>
+            )}
+          </>
+        )} */}
       </div>
 
       <div className={`grid grid-cols-3 gap-1.5`}>

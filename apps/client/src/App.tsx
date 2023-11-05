@@ -13,6 +13,7 @@ import { homeLoader } from './utils/loaders/homeLoader';
 import {
   AccountManagement,
   EditProfile,
+  FollowingPosts,
   Password,
   Posts,
   Work,
@@ -27,6 +28,7 @@ import { postsLoader } from './utils/loaders/postsLoader';
 import { profileLoader } from './utils/loaders/profileLoader';
 import { profileWorkLoader } from './utils/loaders/profileWorkLoader';
 import { postLoader } from './utils/loaders/postLoader';
+import { followingPostsLoader } from './utils/loaders/followingPostsLoader';
 
 const router = createBrowserRouter([
   {
@@ -39,7 +41,11 @@ const router = createBrowserRouter([
         element: <PostsLayout />,
         children: [
           { index: true, element: <Posts />, loader: postsLoader },
-          { path: 'following' },
+          {
+            path: 'following',
+            element: <FollowingPosts />,
+            loader: followingPostsLoader,
+          },
         ],
       },
       {
