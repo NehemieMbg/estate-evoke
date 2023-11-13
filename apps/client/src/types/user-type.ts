@@ -24,4 +24,5 @@ export type User = {
   createdAt: string;
   updatedAt: string;
   isFollowing: boolean;
+  isLiking: boolean;
 };

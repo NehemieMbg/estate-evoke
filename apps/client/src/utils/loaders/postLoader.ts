@@ -14,7 +14,12 @@ export const postLoader = async ({ params }: ActionFunctionArgs) => {
       data: { isFollowing },
     } = await customFetch.get(`/follows/${post.author.id}`);
 
+    const {
+      data: { isLiking },
+    } = await customFetch.get(`/likes/${postId}`);
+
     post.author.isFollowing = isFollowing;
+    post.author.isLiking = isLiking;
 
     return post;
   } catch (error) {

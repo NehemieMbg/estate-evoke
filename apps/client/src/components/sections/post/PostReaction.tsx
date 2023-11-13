@@ -4,6 +4,7 @@ import { CheckIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
 import { User } from '../../../types/user-type';
 import useFollow from '../../../hooks/useFollow';
+import useLike from '../../../hooks/useLike';
 
 type PostReactionProps = {
   post: Post;
@@ -14,7 +15,10 @@ const PostReaction: React.FC<PostReactionProps> = ({ post }) => {
     (state: { auth: { user: User } }) => state.auth.user
   );
 
+  console.log(post);
+
   const [handleFollowing, handleUnfollowing] = useFollow();
+  const [handleLike, handleUnlike] = useLike();
 
   const handleFollow = () => {
     if (user.username === post.author.username) return;
@@ -23,6 +27,14 @@ const PostReaction: React.FC<PostReactionProps> = ({ post }) => {
       handleUnfollowing(post.author.id);
     } else {
       handleFollowing(post.author.id);
+    }
+  };
+
+  const handleLiking = () => {
+    if (post.author.isLiking) {
+      handleUnlike(post.id);
+    } else {
+      handleLike(post.id);
     }
   };
 
@@ -69,7 +81,16 @@ const PostReaction: React.FC<PostReactionProps> = ({ post }) => {
       </div>
 
       <div className="flex flex-col items-center gap-2">
-        <button className="flex items-center justify-center h-11 w-11 rounded-full bg-white border border-neutral-200 aspect-square overflow-hidden hover:bg-blue-500 hover:text-white transition-colors duration-200">
+        <button
+          onClick={handleLiking}
+          className={`flex items-center justify-center h-11 w-11 rounded-full  border border-neutral-200 aspect-square overflow-hidden  transition-colors duration-200
+          ${
+            post.author.isLiking
+              ? 'bg-blue-500 text-white hover:bg-red-600'
+              : 'bg-white hover:bg-blue-500 hover:text-white'
+          }
+          `}
+        >
           <HeartIcon className="w-5 h-5" />
         </button>
         <p className="text-neutral-800 text-xs">Like</p>

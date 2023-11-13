@@ -11,6 +11,7 @@ import userRouter from './routes/userRouter';
 import authRouter from './routes/authRouter';
 import postRouter from './routes/postRouter';
 import followRouter from './routes/followRouter';
+import likeRouter from './routes/likeRouter';
 
 import { authMiddleware } from './middlewares/authMiddleware';
 
@@ -39,6 +40,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/posts', postRouter);
 app.use('/api/v1/follows', authMiddleware, followRouter);
+app.use('/api/v1/likes', authMiddleware, likeRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });

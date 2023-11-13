@@ -76,6 +76,7 @@ model Like {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt // Updtate automatically when an update is made
 
+  @@unique([userId, postId])
   @@index([postId])
   @@index([userId])
 }
