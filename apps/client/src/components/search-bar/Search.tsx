@@ -33,12 +33,9 @@ const Search = () => {
       >
         <div
           onClick={() => setSearch(true)}
-          className="px-4 py-2.5 flex items-center gap-2.5 text-neutral-400 bg-neutral-200 rounded-md"
+          className="px-4 py-2.5 flex items-center gap-2.5 text-neutral-500 bg-neutral-200 rounded-md"
         >
-          <MagnifyingGlassIcon
-            className="h-4 text-neutral-400"
-            strokeWidth={2.4}
-          />
+          <MagnifyingGlassIcon className="h-4" strokeWidth={2.4} />
           <p className="outline-none text-sm font-light py-[3px] w-full bg-inherit cursor-text">
             Search in evoke estate...
           </p>
@@ -53,18 +50,17 @@ const Search = () => {
         >
           <div
             className={`px-4 py-2.5 z-[100] flex items-center gap-2.5 text-neutral-400 rounded-sm w-full
-        ${search ? '' : 'relative bg-neutral-200'}
         `}
           >
-            <div className="flex items-center gap-2.5 text-black w-full border-b pb-2.5">
+            <div className="flex items-center gap-2.5 text-black w-full">
               <MagnifyingGlassIcon
-                className="h-4 text-neutral-400"
+                className="h-4 text-neutral-500"
                 strokeWidth={2.4}
               />
               <input
                 ref={inputRef}
                 type="text"
-                className="outline-none placeholder:text-sm placeholder:font-light font-inter font-normal w-full bg-inherit"
+                className="outline-none placeholder:text-sm placeholder:font-light placeholder:text-neutral-500 font-inter font-normal w-full bg-inherit"
                 placeholder="Search in evoke estate..."
               />
             </div>

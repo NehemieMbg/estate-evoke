@@ -34,3 +34,4 @@ export { default as FollowingPosts } from './sections/home/FollowingPosts';
 export { default as Logo } from './logo/Logo';
 export { default as Notifications } from './notifications/Notifications';
 export { default as Message } from './messages/Message';
+export { default as Stories } from './stories/Stories';

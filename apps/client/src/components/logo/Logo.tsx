@@ -2,13 +2,16 @@ import { Link } from 'react-router-dom';
 
 type LogoProps = {
   long?: boolean;
+  sm?: boolean;
 };
 
-const Logo: React.FC<LogoProps> = ({ long }) => {
+const Logo: React.FC<LogoProps> = ({ long, sm }) => {
   return (
     <Link
       to={'/'}
-      className="rounded-sm text-xl font-inter font-medium tracking-tighter"
+      className={`rounded-sm  font-inter font-medium tracking-tighter
+      ${sm ? 'text-md' : 'text-xl'}
+      `}
     >
       <span className="italic">eǝ. </span>
       <span className={`${!long ? 'hidden' : 'visible'} text-sm`}>
