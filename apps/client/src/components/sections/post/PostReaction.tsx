@@ -15,8 +15,6 @@ const PostReaction: React.FC<PostReactionProps> = ({ post }) => {
     (state: { auth: { user: User } }) => state.auth.user
   );
 
-  console.log(post);
-
   const [handleFollowing, handleUnfollowing] = useFollow();
   const [handleLike, handleUnlike] = useLike();
 

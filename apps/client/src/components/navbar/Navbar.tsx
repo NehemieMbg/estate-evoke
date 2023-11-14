@@ -1,49 +1,32 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   openLoginModal,
   openRegisterModal,
 } from '../../redux/reducers/auth-reducer';
 import { User } from '../../types/user-type';
-import { NavigationCard } from '..';
+import { Logo, Message, NavigationCard, Notifications, Search } from '..';
+import { PlusIcon } from '@heroicons/react/24/outline';
+import Navigation from './Navigation';
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const currentPath = location.pathname.split('/')[1];
 
   const user = useSelector(
     (state: { auth: { user: User } }) => state.auth.user
   );
 
   return (
-    <nav className="sticky z-[99] top-0 py-2.5 px-6 border-b-2 bg-white shadow-sm shadow-neutral-200 border-b-neutral-100 border-opacity-0 flex items-center justify-between">
-      <div className="flex gap-6 items-center">
-        <Link to={'/'} className="font-exo text-lg">
-          evoke-estate
-        </Link>
+    <nav className="sticky z-[99] top-0 py-2.5 px-6 bg-white flex items-center justify-between font-inter gap-6">
+      <Logo />
 
-        <Link
-          to={'/'}
-          className={`relative font-exo text-[15px]
-          ${
-            (!currentPath || currentPath === 'following') &&
-            'text-black font-medium'
-          }
-        `}
-        >
-          <span>For You</span>
-          {(!currentPath || currentPath === 'following') && (
-            <div className="absolute top-7 left-1/2 w-1 h-1 rounded-full bg-black"></div>
-          )}
-        </Link>
-      </div>
+      <Search />
 
-      {/* <Search /> */}
+      <Navigation />
 
       {!user ? (
         <>
-          <div className="flex gap-6 items-center text-sm font-exo">
+          <div className="flex gap-6 items-center text-sm whitespace-nowrap">
             <button onClick={() => dispatch(openLoginModal())}>Log in</button>
             <button
               onClick={() => dispatch(openRegisterModal())}
@@ -57,11 +40,17 @@ const Navbar = () => {
         <div className="flex gap-6 items-center">
           <Link
             to={'/portfolio/new-design'}
-            className=" font-exo text-sm bg-neutral-100 font-medium border border-neutral-200 text-neutral-500 py-1.5 px-3.5 rounded-full hover:opacity-90 transition-colors duration-200 hover:bg-neutral-200 "
+            className="text-sm font-light bg-black border border-neutral-200 text-white py-3 px-5 rounded-md hover:opacity-90 transition-colors duration-200 hover:bg-opacity-95 flex items-center gap-2 w-max"
           >
-            Share design
+            <PlusIcon className="h-4" strokeWidth={2.5} />
+            <span>New Design</span>
           </Link>
-          <NavigationCard user={user} />
+
+          <div className="flex items-center gap-4">
+            <Message />
+            <Notifications />
+            <NavigationCard user={user} />
+          </div>
         </div>
       )}
     </nav>

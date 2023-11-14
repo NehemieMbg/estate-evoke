@@ -9,7 +9,7 @@ const DesignLayout = () => {
   const [imageUrl, setImageUrl] = useState('');
 
   return (
-    <section className="py-6 min-[900px]:px-6 w-full design gap-4">
+    <section className="py-6 min-[900px]:px-6 w-full design gap-4 bg-neutral-100">
       <div className="font-exo text-sm flex justify-between mb-2 max-[900px]:px-6">
         <Link
           to={'..'}

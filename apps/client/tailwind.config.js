@@ -14,6 +14,7 @@ export default {
       fontFamily: {
         roboto: ['Roboto', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
         exo: ['"Exo 2"', 'sans-serif'],
       },
     },

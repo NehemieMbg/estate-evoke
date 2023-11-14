@@ -24,7 +24,7 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
       <div className="z-99 relative font-exo">
         <div
           onClick={() => setMenu(true)}
-          className="bg-neutral-300 h-10 cursor-pointer aspect-square rounded-full overflow-hidden"
+          className="bg-neutral-300 h-9 cursor-pointer aspect-square rounded-full overflow-hidden"
         >
           {user.avatar && (
             <img

@@ -6,34 +6,34 @@ const HomeNavigation = () => {
   const currentPath = location.pathname.split('/')[1];
 
   return (
-    <div className="border-b border-b-neutral-150 font-exo  mb-10 max-lg:mb-8  flex items-center gap-6">
+    <div className="font-inter  mb-10 max-lg:mb-8 flex items-center gap-2 text-sm">
       <Link
         to={'.'}
-        className={`py-2.5 flex items-center gap-1 border-b-[2px] border-transparent w-max  transition-colors duration-200 hover:border-b-neutral-500 hover:font-medium
+        className={`py-2.5 flex items-center gap-1 border-b-[2px] border-transparent w-max  transition-colors duration-100 hover:bg-neutral-900 hover:text-white font-medium px-5 rounded-lg
 		  ${
         !currentPath
-          ? 'border-b-[2px] text-black w-max border-b-black font-medium'
-          : 'text-neutral-500'
+          ? 'text-white w-max bg-neutral-900 font-medium'
+          : 'text-neutral-900'
       }
 		  `}
       >
-        <HeartIcon className="w-5" />
+        <HeartIcon className="w-4 h-4" />
         <span>For You</span>
       </Link>
 
-      <div className="text-neutral-300">|</div>
+      {/* <div className="text-neutral-300">|</div> */}
 
       <Link
         to={'following'}
-        className={`py-2.5 flex items-center gap-2 border-b-[2px] border-transparent w-max  transition-colors duration-200 hover:border-b-neutral-500 hover:font-medium
+        className={`py-2.5 flex items-center gap-1 border-b-[2px] border-transparent w-max  transition-colors duration-100 hover:bg-neutral-900 hover:text-white font-medium px-5 rounded-lg
 		  ${
         currentPath === 'following'
-          ? 'border-b-[2px] text-black w-max border-b-black font-medium'
-          : 'text-neutral-500'
+          ? 'text-white w-max bg-neutral-900 font-medium'
+          : 'text-neutral-900'
       }
 		  `}
       >
-        <UsersIcon className="w-5" strokeWidth={2} />
+        <UsersIcon className="w-4 h-4" strokeWidth={2} />
         <span>Following</span>
       </Link>
     </div>
