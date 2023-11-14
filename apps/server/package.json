@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon ./dist/server.js",
     "db": "npx prisma studio",
-    "client": "cd ../client && npm run dev",
     "watch": "tsc -w",
+    "client": "cd ../client && npm run dev",
+    "server": "nodemon ./dist/server.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\" \"npm run db\" \"npm run watch\""
   },
   "keywords": [],

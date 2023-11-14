@@ -33,7 +33,10 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-// allow access to public folder to get images
+// Resolve the path to the target file
+const targetPath = path.resolve(__dirname, './apps/client/dist');
+
+// allow access to public folder to get imagess
 app.use(express.static(path.resolve(__dirname, './public')));
 
 app.use('/api/v1/auth', authRouter);
@@ -41,6 +44,10 @@ app.use('/api/v1/users', userRouter);
 app.use('/api/v1/posts', postRouter);
 app.use('/api/v1/follows', authMiddleware, followRouter);
 app.use('/api/v1/likes', authMiddleware, likeRouter);
+
+// app.get('*', (req, res) => {
+//   res.sendFile(targetPath);
+// });
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });

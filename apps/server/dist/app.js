@@ -38,6 +38,9 @@ app.use('/api/v1/users', userRouter_1.default);
 app.use('/api/v1/posts', postRouter_1.default);
 app.use('/api/v1/follows', authMiddleware_1.authMiddleware, followRouter_1.default);
 app.use('/api/v1/likes', authMiddleware_1.authMiddleware, likeRouter_1.default);
+app.get('*', (req, res) => {
+    res.sendFile(path_1.default.resolve(__dirname, './public/index.html'));
+});
 app.use((err, req, res, next) => {
     res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
 });
