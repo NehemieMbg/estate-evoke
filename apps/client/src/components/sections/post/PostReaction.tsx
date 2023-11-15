@@ -11,15 +11,17 @@ type PostReactionProps = {
 };
 
 const PostReaction: React.FC<PostReactionProps> = ({ post }) => {
+  let username = '';
   const user = useSelector(
     (state: { auth: { user: User } }) => state.auth.user
   );
+  if (user) username = user.username;
 
   const [handleFollowing, handleUnfollowing] = useFollow();
   const [handleLike, handleUnlike] = useLike();
 
   const handleFollow = () => {
-    if (user.username === post.author.username) return;
+    if (username === post.author.username) return;
 
     if (post.author.isFollowing) {
       handleUnfollowing(post.author.id);
@@ -43,7 +45,7 @@ const PostReaction: React.FC<PostReactionProps> = ({ post }) => {
           <img src={post.author.avatar} alt={post.author.username} />
         </div>
 
-        {user.username !== post.author.username && (
+        {username !== post.author.username && (
           <>
             {post.author.isFollowing ? (
               <div className="absolute flex items-center justify-center bottom-0 right-0 bg-white border border-neutral-300 rounded-full h-4 aspect-square">

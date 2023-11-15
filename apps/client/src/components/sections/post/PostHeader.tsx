@@ -11,9 +11,12 @@ type PostHeaderProps = {
 };
 
 const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
+  let username = '';
   const user = useSelector(
     (state: { auth: { user: User } }) => state.auth.user
   );
+
+  if (user) username = user.username;
   const { cardIsOpen, setCardIsOpen, handleMouseEnter, handleMouseLeave } =
     useShowCard();
 
@@ -45,9 +48,9 @@ const PostHeader: React.FC<PostHeaderProps> = ({ post }) => {
           >
             by {post.author.name}
           </Link>
-          {user.username !== post.author.username && <div>&bull;</div>}
+          {username !== post.author.username && <div>&bull;</div>}
 
-          {user.username !== post.author.username && (
+          {username !== post.author.username && (
             <>
               {post.author.isFollowing ? (
                 <button

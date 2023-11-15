@@ -1,11 +1,15 @@
 import { AxiosError } from 'axios';
 import customFetch from '../utils/customFetch';
 import { useNavigate } from 'react-router-dom';
+import useSession from './useSession';
 
 const useLike = () => {
   const navigate = useNavigate();
+  const { isLoggedIn, openLogin } = useSession();
 
   const handleLike = async (id: string) => {
+    if (!isLoggedIn) return openLogin();
+
     try {
       await customFetch.post(`/likes/${id}`);
       navigate('.');
@@ -18,6 +22,8 @@ const useLike = () => {
   };
 
   const handleUnlike = async (id: string) => {
+    if (!isLoggedIn) return openLogin();
+
     try {
       await customFetch.delete(`/likes/${id}`);
       navigate('.');

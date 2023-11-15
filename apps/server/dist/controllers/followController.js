@@ -61,6 +61,10 @@ const getFollows = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.getFollows = getFollows;
 const isFollowing = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
+    if (!req.user)
+        res
+            .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
+            .json({ message: 'You must be connected!' });
     try {
         const isFollowing = yield prisma_1.default.follow.findUnique({
             where: {

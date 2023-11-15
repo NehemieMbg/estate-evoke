@@ -57,6 +57,10 @@ const unlikePost = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.unlikePost = unlikePost;
 const isLiking = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { postId } = req.params;
+    if (!req.user)
+        res
+            .status(http_status_codes_1.StatusCodes.UNAUTHORIZED)
+            .json({ message: 'You must be connected!' });
     try {
         const isLiking = yield prisma_1.default.like.findUnique({
             where: {

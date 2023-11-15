@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { User } from '../../types/user-type';
 import { logout } from '../../utils/functions';
 import { useRef, useState } from 'react';
@@ -9,9 +9,15 @@ type NavigationCardProps = {
 };
 
 const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
+  const navigate = useNavigate();
   const [menu, setMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   useClickOutside(menuRef, () => setMenu(false));
+
+  const handleLogout = () => {
+    logout();
+    navigate('.');
+  };
 
   return (
     <>
@@ -82,7 +88,7 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
 
           <div className="p-5  border-t border-neutral-300">
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="hover:text-neutral-600 transition-colors duration-200"
             >
               Sign out

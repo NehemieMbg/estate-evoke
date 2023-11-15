@@ -10,16 +10,20 @@ export const postLoader = async ({ params }: ActionFunctionArgs) => {
     } = await customFetch.get(`/posts/${postId}`);
 
     // Check if user is following the author of the post
-    const {
-      data: { isFollowing },
-    } = await customFetch.get(`/follows/${post.author.id}`);
+    try {
+      const {
+        data: { isFollowing },
+      } = await customFetch.get(`/follows/${post.author.id}`);
+      post.author.isFollowing = isFollowing;
 
-    const {
-      data: { isLiking },
-    } = await customFetch.get(`/likes/${postId}`);
-
-    post.author.isFollowing = isFollowing;
-    post.author.isLiking = isLiking;
+      const {
+        data: { isLiking },
+      } = await customFetch.get(`/likes/${postId}`);
+      post.author.isLiking = isLiking;
+    } catch (error) {
+      post.author.isFollowing = false;
+      post.author.isLiking = false;
+    }
 
     return post;
   } catch (error) {

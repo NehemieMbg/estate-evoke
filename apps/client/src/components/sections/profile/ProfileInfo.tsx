@@ -10,9 +10,13 @@ type ProfileInfoProps = {
 };
 
 const ProfileInfo: React.FC<ProfileInfoProps> = ({ user }) => {
-  const { username } = useSelector(
+  let username = '';
+
+  const userAccount = useSelector(
     (state: { auth: { user: User } }) => state.auth.user
   );
+
+  if (userAccount) username = userAccount.username;
 
   const [handleFollowing, handleUnfollowing] = useFollow();
 

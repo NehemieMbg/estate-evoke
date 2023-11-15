@@ -13,7 +13,10 @@ import postRouter from './routes/postRouter';
 import followRouter from './routes/followRouter';
 import likeRouter from './routes/likeRouter';
 
-import { authMiddleware } from './middlewares/authMiddleware';
+import {
+  actionAuthMiddleware,
+  authMiddleware,
+} from './middlewares/authMiddleware';
 
 dotenv.config();
 
@@ -42,8 +45,8 @@ app.use(express.static(path.resolve(__dirname, './public')));
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/posts', postRouter);
-app.use('/api/v1/follows', authMiddleware, followRouter);
-app.use('/api/v1/likes', authMiddleware, likeRouter);
+app.use('/api/v1/follows', actionAuthMiddleware, followRouter);
+app.use('/api/v1/likes', actionAuthMiddleware, likeRouter);
 
 // app.get('*', (req, res) => {
 //   res.sendFile(targetPath);

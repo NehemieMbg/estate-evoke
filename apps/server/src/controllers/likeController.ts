@@ -43,6 +43,11 @@ export const unlikePost: RequestHandler = async (req: UserRequest, res) => {
 export const isLiking: RequestHandler = async (req: UserRequest, res) => {
   const { postId } = req.params;
 
+  if (!req.user)
+    res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: 'You must be connected!' });
+
   try {
     const isLiking = await prisma.like.findUnique({
       where: {

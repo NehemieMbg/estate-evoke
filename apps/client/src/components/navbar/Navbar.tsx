@@ -1,20 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import {
-  openLoginModal,
-  openRegisterModal,
-} from '../../redux/reducers/auth-reducer';
-import { User } from '../../types/user-type';
 import { Logo, Message, NavigationCard, Notifications, Search } from '..';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import Navigation from './Navigation';
+import useSession from '../../hooks/useSession';
 
 const Navbar = () => {
-  const dispatch = useDispatch();
-
-  const user = useSelector(
-    (state: { auth: { user: User } }) => state.auth.user
-  );
+  const { openLogin, openRegister, user, isLoggedIn } = useSession();
 
   return (
     <nav className="sticky z-[99] top-0 py-2.5 px-6 bg-white flex items-center justify-between font-inter gap-6">
@@ -24,12 +15,12 @@ const Navbar = () => {
 
       <Navigation />
 
-      {!user ? (
+      {!isLoggedIn ? (
         <>
           <div className="flex gap-6 items-center text-sm whitespace-nowrap">
-            <button onClick={() => dispatch(openLoginModal())}>Log in</button>
+            <button onClick={openLogin}>Log in</button>
             <button
-              onClick={() => dispatch(openRegisterModal())}
+              onClick={openRegister}
               className="text-white bg-black hover:opacity-90 transition-colors duration-200 py-2.5 px-5 rounded-full"
             >
               Sign up

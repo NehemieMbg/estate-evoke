@@ -46,6 +46,12 @@ export const getFollows: RequestHandler = async (req: UserRequest, res) => {
 
 export const isFollowing: RequestHandler = async (req: UserRequest, res) => {
   const { id } = req.params;
+
+  if (!req.user)
+    res
+      .status(StatusCodes.UNAUTHORIZED)
+      .json({ message: 'You must be connected!' });
+
   try {
     const isFollowing = await prisma.follow.findUnique({
       where: {

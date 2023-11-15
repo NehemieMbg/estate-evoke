@@ -31,16 +31,18 @@ app.use((0, cookie_parser_1.default)());
 if (process.env.NODE_ENV === 'development') {
     app.use((0, morgan_1.default)('dev'));
 }
-// allow access to public folder to get images
+// Resolve the path to the target file
+const targetPath = path_1.default.resolve(__dirname, './apps/client/dist');
+// allow access to public folder to get imagess
 app.use(express_1.default.static(path_1.default.resolve(__dirname, './public')));
 app.use('/api/v1/auth', authRouter_1.default);
 app.use('/api/v1/users', userRouter_1.default);
 app.use('/api/v1/posts', postRouter_1.default);
-app.use('/api/v1/follows', authMiddleware_1.authMiddleware, followRouter_1.default);
-app.use('/api/v1/likes', authMiddleware_1.authMiddleware, likeRouter_1.default);
-app.get('*', (req, res) => {
-    res.sendFile(path_1.default.resolve(__dirname, './public/index.html'));
-});
+app.use('/api/v1/follows', authMiddleware_1.actionAuthMiddleware, followRouter_1.default);
+app.use('/api/v1/likes', authMiddleware_1.actionAuthMiddleware, likeRouter_1.default);
+// app.get('*', (req, res) => {
+//   res.sendFile(targetPath);
+// });
 app.use((err, req, res, next) => {
     res.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ message: err.message });
 });

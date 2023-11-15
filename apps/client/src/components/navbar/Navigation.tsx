@@ -6,22 +6,22 @@ const Navigation = () => {
   const currentPath = location.pathname.split('/')[1];
 
   return (
-    <div className="fixed flex items-center gap-2 bottom-3 left-1/2 translate-x-[-50%] bg-neutral-900 bg-opacity-80 backdrop-blur-sm text-white p-1.5 rounded-lg">
-      <div className="bg-black rounded-md w-max py-2.5 px-4">
+    <div className="fixed py-3.5 px-5 flex items-center gap-6 bottom-3 left-1/2 translate-x-[-50%] bg-neutral-900 bg-opacity-80 backdrop-blur-sm text-white  rounded-md">
+      <div className=" w-max ">
         <Logo sm />
       </div>
 
-      <div className="bg-white  text-black rounded-md">
+      <div className=" rounded-md">
         <Link
           to={'/'}
-          className={`relative text-sm py-3 bg-neutral-200 rounded-md px-4 hover:font-semibold transition-all duration-200 font-light
-	${(!currentPath || currentPath === 'following') && 'font-medium'}
+          className={`relative text-sm  rounded-md hover:font-medium transition-all duration-200 font-light
+	${(!currentPath || currentPath === 'following') && ' font-medium'}
   `}
         >
-          <span>For You</span>
-          {/* {(!currentPath || currentPath === 'following') && (
-            <div className="absolute top-9 left-1/2 w-0.5 h-0.5 rounded-full bg-black"></div>
-          )} */}
+          <span className="shadow-sm">For You</span>
+          {(!currentPath || currentPath === 'following') && (
+            <div className="absolute top-5 left-1/2 w-[2px] h-[2px] rounded-full bg-white"></div>
+          )}
         </Link>
       </div>
     </div>

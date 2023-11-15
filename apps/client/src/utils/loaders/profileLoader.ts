@@ -7,7 +7,9 @@ export const profileLoader = async ({ params }: ActionFunctionArgs) => {
     const {
       data: { data: user },
     } = await customFetch.get(`/users/user/${params.username}`);
+
     if (!user) return redirect('/');
+
     return user || null;
   } catch (error) {
     if (error instanceof AxiosError) return error.response?.data.message;
