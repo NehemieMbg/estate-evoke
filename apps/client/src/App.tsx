@@ -6,6 +6,7 @@ import {
   SettingsLayout,
   PostsLayout,
   Post,
+  Search,
 } from './pages';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
             loader: followingPostsLoader,
           },
         ],
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
       {
         path: '/gallery/:postId/:postName',

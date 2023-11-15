@@ -20,7 +20,7 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
   };
 
   return (
-    <>
+    <div className="max-lg:hidden">
       <div
         className={`backdrop
  		   transition-all duration-200
@@ -96,7 +96,7 @@ const NavigationCard: React.FC<NavigationCardProps> = ({ user }) => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 export default NavigationCard;

@@ -1,14 +1,16 @@
 import { HeartIcon, UsersIcon } from '@heroicons/react/24/solid';
 import { Link, useLocation } from 'react-router-dom';
 import { Stories } from '../..';
+import useSession from '../../../hooks/useSession';
 
 const HomeNavigation = () => {
   const location = useLocation();
+  const { isLoggedIn } = useSession();
   const currentPath = location.pathname.split('/')[1];
 
   return (
     <div>
-      <Stories />
+      {isLoggedIn && <Stories />}
 
       <div className="font-inter mb-6 flex items-center gap-2 text-xs">
         <Link

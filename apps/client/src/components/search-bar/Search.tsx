@@ -21,13 +21,13 @@ const Search = () => {
     <>
       <div
         className={`backdrop-search
- 		   transition-all duration-200
+ 		   transition-all duration-200 z-[88] max-lg:hidden
 			${search ? 'opacity-100 visible' : 'opacity-0 invisible'}
  `}
       ></div>
 
       <div
-        className={`relative z-[100] font-inter w-full
+        className={`relative z-[90] font-inter w-full
 
         `}
       >

@@ -97,7 +97,7 @@ const SignUp = () => {
           onSubmit={handleRegister}
           className="w-full flex flex-col items-center gap-8"
         >
-          <div className="flex gap-4">
+          <div className="flex gap-4 w-full">
             <AuthInputs
               label="Name"
               type="text"

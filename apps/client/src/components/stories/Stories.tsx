@@ -4,7 +4,7 @@ const Stories = () => {
   return (
     <div className="mb-10 w-full">
       <button className="flex flex-col items-center gap-2 font-inter">
-        <div className="flex items-center justify-center bg-neutral-800 hover:bg-neutral-950 transition-colors duration-200 h-16 w-16 aspect-square rounded-full">
+        <div className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 transition-colors duration-200 h-14 w-14 aspect-square rounded-full">
           <PlusIcon className="w-8 h-8 text-white mx-auto" />
         </div>
         <p className="text-xs hover:underline font-medium">Add Yours</p>

@@ -5,3 +5,4 @@ export { default as ProfileLayout } from './ProfileLayout';
 export { default as NewDesign } from './NewDesign';
 export { default as PostsLayout } from './PostsLayout';
 export { default as Post } from './Post';
+export { default as Search } from './Search';
