@@ -10,7 +10,7 @@ export const homeLoader = async () => {
 
     store.dispatch(setUser(data));
 
-    return data;
+    return data || null;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
