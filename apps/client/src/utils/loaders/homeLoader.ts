@@ -13,7 +13,6 @@ export const homeLoader = async () => {
     return data || null;
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error.message);
       return error.message;
     }
     return 'Something went wrong';
