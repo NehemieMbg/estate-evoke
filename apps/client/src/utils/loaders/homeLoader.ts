@@ -1,6 +1,6 @@
 import customFetch from '../customFetch';
-import { store } from '../../redux/store';
-import { setUser } from '../../redux/reducers/auth-reducer';
+// import { store } from '../../redux/store';
+// import { setUser } from '../../redux/reducers/auth-reducer';
 
 export const homeLoader = async () => {
   try {
@@ -8,7 +8,7 @@ export const homeLoader = async () => {
       data: { data },
     } = await customFetch.get('/users/user');
 
-    store.dispatch(setUser(data));
+    // store.dispatch(setUser(data));
 
     return data || null;
   } catch (error) {
